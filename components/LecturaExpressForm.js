@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MoonIcon } from '@/components/ui';
+import { IconFlame, IconLeaf, IconWind, IconWater, IconMoon as IconMoonCustom } from '@/components/icons';
 
 // ── Inline sun sign calculator (no imports needed) ──
 function calcSunSign(month, day) {
@@ -119,7 +120,7 @@ export default function LecturaExpressForm({ compact = false }) {
   if (step === 3) {
     return (
       <div className="text-center py-6 animate-fade-in" ref={resultRef}>
-        <div className="text-4xl mb-4">🌙</div>
+        <div className="mb-4"><IconMoonCustom size={40} className="text-selene-gold mx-auto" /></div>
         <h3 className="font-display text-xl text-selene-gold mb-2">Tu lectura completa esta en camino</h3>
         <p className="text-sm text-selene-white-dim mb-6 max-w-[320px] mx-auto">
           Revisa tu email en unos minutos. Selene ha preparado algo unico para ti.
@@ -155,10 +156,10 @@ export default function LecturaExpressForm({ compact = false }) {
             <div className="text-[80px] leading-none mb-3">{signResult.emoji}</div>
             <h3 className="font-display text-2xl text-selene-gold mb-2">{signResult.sign}</h3>
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium ${elColor.bg} ${elColor.border} ${elColor.text} border`}>
-              {signResult.element === 'Fuego' && '🔥'}
-              {signResult.element === 'Tierra' && '🌍'}
-              {signResult.element === 'Aire' && '💨'}
-              {signResult.element === 'Agua' && '🌊'}
+              {signResult.element === 'Fuego' && <IconFlame size={14} className="text-red-400" />}
+              {signResult.element === 'Tierra' && <IconLeaf size={14} className="text-emerald-400" />}
+              {signResult.element === 'Aire' && <IconWind size={14} className="text-sky-400" />}
+              {signResult.element === 'Agua' && <IconWater size={14} className="text-blue-400" />}
               {signResult.element}
             </div>
           </div>

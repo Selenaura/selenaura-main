@@ -11,6 +11,14 @@ import {
   Navbar, Card, SectionTitle, ArrowIcon, SunIcon, HistoryIcon,
   CompassIcon, MoonIcon, BookIcon, StarIcon, Badge,
 } from '@/components/ui';
+import {
+  IconBriefcase, IconHeart, IconPalette, IconLotus, IconPeople, IconBrain,
+  IconCheck, IconX, IconTarot, IconConjunction, IconDream, IconBook,
+  IconStar, IconSparkle, IconMoon as IconMoonCustom, IconSun as IconSunCustom,
+  IconRetrograde, IconFlame, IconTransit, IconConstellation,
+  IconLeaf, IconWind, IconWater,
+  getEventIcon, getReadingIcon,
+} from '@/components/icons';
 
 // ── Moon phase calculation ──
 function getMoonPhase(date = new Date()) {
@@ -29,14 +37,8 @@ function getMoonPhase(date = new Date()) {
 }
 
 function getMoonEmoji(phase) {
-  if (phase === 0) return '🌑';
-  if (phase <= 3) return '🌒';
-  if (phase <= 7) return '🌓';
-  if (phase <= 11) return '🌔';
-  if (phase <= 15) return '🌕';
-  if (phase <= 19) return '🌖';
-  if (phase <= 23) return '🌗';
-  return '🌘';
+  // Returns a moon icon component instead of emoji
+  return <IconMoonCustom size={18} className="text-selene-gold inline-block" />;
 }
 
 function getMoonPhaseName(phase) {
@@ -68,26 +70,26 @@ const STATIC_HOROSCOPES = {
 
 // ── Dato del dia (7, rotate by weekday) ──
 const DATOS_DEL_DIA = [
-  { emoji: '🌕', text: 'La Luna tarda 27,3 dias en orbitar la Tierra — el mismo ciclo que tu energia emocional.' },
-  { emoji: '☉', text: 'El Sol es 109 veces mas grande que la Tierra. Tu signo solar representa tu nucleo mas visible — pero no es todo lo que eres.' },
-  { emoji: '🪐', text: 'Saturno tarda 29,5 anos en completar su orbita. El "retorno de Saturno" marca los momentos de mayor crecimiento en la vida adulta.' },
-  { emoji: '♀', text: 'Venus rota en sentido contrario al resto de planetas. En astrologia, representa lo que valoras incluso cuando va contra la corriente.' },
-  { emoji: '🔴', text: 'Marte tiene el volcan mas alto del sistema solar: 21 km. Tu Marte natal indica donde canalizas tu fuerza mas intensa.' },
-  { emoji: '♃', text: 'Jupiter podria contener 1.300 Tierras. En tu carta natal, senala donde tienes capacidad de expansion ilimitada.' },
-  { emoji: '💫', text: 'Hay mas estrellas en el universo observable que granos de arena en todas las playas de la Tierra. Tu carta natal captura un instante irrepetible de ese cielo.' },
+  { icon: 'moon', text: 'La Luna tarda 27,3 dias en orbitar la Tierra — el mismo ciclo que tu energia emocional.' },
+  { icon: 'sun', text: 'El Sol es 109 veces mas grande que la Tierra. Tu signo solar representa tu nucleo mas visible — pero no es todo lo que eres.' },
+  { icon: 'retrograde', text: 'Saturno tarda 29,5 anos en completar su orbita. El "retorno de Saturno" marca los momentos de mayor crecimiento en la vida adulta.' },
+  { icon: 'conjunction', text: 'Venus rota en sentido contrario al resto de planetas. En astrologia, representa lo que valoras incluso cuando va contra la corriente.' },
+  { icon: 'flame', text: 'Marte tiene el volcan mas alto del sistema solar: 21 km. Tu Marte natal indica donde canalizas tu fuerza mas intensa.' },
+  { icon: 'transit', text: 'Jupiter podria contener 1.300 Tierras. En tu carta natal, senala donde tienes capacidad de expansion ilimitada.' },
+  { icon: 'constellation', text: 'Hay mas estrellas en el universo observable que granos de arena en todas las playas de la Tierra. Tu carta natal captura un instante irrepetible de ese cielo.' },
 ];
 
-// ── Reading type icons ──
-const READING_ICONS = {
-  'lectura-express': '⚡',
-  'carta-basica': '☉',
-  'carta-completa': '🌙',
-  'carta-premium': '✦',
-  'compatibilidad': '💫',
-  'tarot-profunda': '🃏',
-  'quirologia': '🤚',
-  'suenos': '💤',
+const DATO_ICON_MAP = {
+  moon: IconMoonCustom,
+  sun: IconSunCustom,
+  retrograde: IconRetrograde,
+  conjunction: IconConjunction,
+  flame: IconFlame,
+  transit: IconTransit,
+  constellation: IconConstellation,
 };
+
+// Reading icons are now provided by getReadingIcon() from @/components/icons
 
 // ── Energy dots ──
 function EnergyDots({ level = 5, total = 5 }) {
@@ -122,13 +124,13 @@ const ZODIAC_ORDER = [
   'Libra', 'Escorpio', 'Sagitario', 'Capricornio', 'Acuario', 'Piscis',
 ];
 
-const AREA_ICONS = {
-  Trabajo: '💼',
-  Amor: '❤️',
-  Creatividad: '🎨',
-  Bienestar: '🧘',
-  Relaciones: '👥',
-  Interior: '🧠',
+const AREA_ICON_COMPONENTS = {
+  Trabajo: IconBriefcase,
+  Amor: IconHeart,
+  Creatividad: IconPalette,
+  Bienestar: IconLotus,
+  Relaciones: IconPeople,
+  Interior: IconBrain,
 };
 
 const AREA_TEXTS = {
@@ -165,9 +167,9 @@ const AREA_TEXTS = {
 };
 
 const STATUS_CONFIG = {
-  fluye: { dot: '🟢', label: 'Fluye', color: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/5' },
-  neutro: { dot: '🟡', label: 'Neutro', color: 'text-yellow-400', border: 'border-yellow-500/20', bg: 'bg-yellow-500/5' },
-  tension: { dot: '🔴', label: 'Tension', color: 'text-red-400', border: 'border-red-500/20', bg: 'bg-red-500/5' },
+  fluye: { dotColor: 'bg-emerald-400', label: 'Fluye', color: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/5' },
+  neutro: { dotColor: 'bg-yellow-400', label: 'Neutro', color: 'text-yellow-400', border: 'border-yellow-500/20', bg: 'bg-yellow-500/5' },
+  tension: { dotColor: 'bg-red-400', label: 'Tension', color: 'text-red-400', border: 'border-red-500/20', bg: 'bg-red-500/5' },
 };
 
 function getLifeAreas(sign, dayOfWeek) {
@@ -182,7 +184,7 @@ function getLifeAreas(sign, dayOfWeek) {
     const status = statuses[seed];
     return {
       name: area,
-      icon: AREA_ICONS[area],
+      IconComponent: AREA_ICON_COMPONENTS[area],
       status,
       text: AREA_TEXTS[area][status],
     };
@@ -274,10 +276,10 @@ const SIGN_DETAILS = {
 };
 
 const ELEMENT_DESCRIPTIONS = {
-  Fuego: { emoji: '🔥', label: 'Fuego', desc: 'Pasion, accion e impulso vital' },
-  Tierra: { emoji: '🌍', label: 'Tierra', desc: 'Estabilidad, constancia y raices' },
-  Aire: { emoji: '💨', label: 'Aire', desc: 'Intelecto, comunicacion y libertad' },
-  Agua: { emoji: '🌊', label: 'Agua', desc: 'Emocion, intuicion y profundidad' },
+  Fuego: { IconComp: IconFlame, label: 'Fuego', desc: 'Pasion, accion e impulso vital' },
+  Tierra: { IconComp: IconLeaf, label: 'Tierra', desc: 'Estabilidad, constancia y raices' },
+  Aire: { IconComp: IconWind, label: 'Aire', desc: 'Intelecto, comunicacion y libertad' },
+  Agua: { IconComp: IconWater, label: 'Agua', desc: 'Emocion, intuicion y profundidad' },
 };
 
 // ══════════════════════════════════════════════════
@@ -292,16 +294,17 @@ function LifeAreasGrid({ sign }) {
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
       {areas.map((area) => {
         const cfg = STATUS_CONFIG[area.status];
+        const AreaIcon = area.IconComponent;
         return (
           <div
             key={area.name}
             className={`rounded-xl border ${cfg.border} ${cfg.bg} p-3.5 transition-all hover:scale-[1.01]`}
           >
             <div className="flex items-center gap-2 mb-1.5">
-              <span className="text-base">{area.icon}</span>
+              {AreaIcon && <AreaIcon size={16} className="text-selene-white-dim" />}
               <span className="text-[13px] font-semibold text-selene-white">{area.name}</span>
-              <span className="ml-auto text-xs flex items-center gap-1">
-                <span className="text-sm">{cfg.dot}</span>
+              <span className="ml-auto text-xs flex items-center gap-1.5">
+                <span className={`w-2 h-2 rounded-full ${cfg.dotColor}`} />
                 <span className={`text-[11px] font-medium ${cfg.color}`}>{cfg.label}</span>
               </span>
             </div>
@@ -328,7 +331,7 @@ function ConsejoDelDia() {
       {/* HAZ */}
       <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-4">
         <div className="flex items-center gap-2 mb-2.5">
-          <span className="text-lg">✅</span>
+          <IconCheck size={18} className="text-emerald-400" />
           <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-emerald-400">Haz</span>
         </div>
         <p className="text-[13px] text-selene-white/90 leading-relaxed">
@@ -338,7 +341,7 @@ function ConsejoDelDia() {
       {/* EVITA */}
       <div className="rounded-xl border border-red-500/25 bg-red-500/5 p-4">
         <div className="flex items-center gap-2 mb-2.5">
-          <span className="text-lg">🚫</span>
+          <IconX size={18} className="text-red-400" />
           <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-red-400">Evita</span>
         </div>
         <p className="text-[13px] text-selene-white/90 leading-relaxed">
@@ -374,16 +377,21 @@ function EventosCosmicos({ sunSign }) {
       {/* Active now banner if there are current events */}
       {current.length > 0 && (
         <div className="mb-4 p-3 rounded-xl bg-selene-gold/5 border border-selene-gold/15">
-          <p className="text-[10px] text-selene-gold font-semibold tracking-[0.1em] uppercase mb-2">🔴 Activo ahora</p>
-          {current.map((ev, i) => (
+          <p className="text-[10px] text-selene-gold font-semibold tracking-[0.1em] uppercase mb-2 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse" /> Activo ahora
+          </p>
+          {current.map((ev, i) => {
+            const EvIcon = getEventIcon(ev.type);
+            return (
             <div key={`now-${i}`} className="flex items-start gap-3 mb-2 last:mb-0">
-              <span className="text-lg shrink-0">{ev.emoji}</span>
+              <EvIcon size={20} className="text-selene-gold shrink-0 mt-0.5" />
               <div>
                 <p className="text-[13px] text-selene-white font-medium">{ev.title}</p>
                 <p className="text-[11px] text-selene-white-dim">{ev.subtitle}</p>
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
       )}
 
@@ -397,6 +405,7 @@ function EventosCosmicos({ sunSign }) {
             const impactColor = getImpactColor(ev.impact);
             const typeLabel = getTypeLabel(ev.type);
             const isPast = days < 0;
+            const TimelineIcon = getEventIcon(ev.type);
             const isToday = days === 0;
 
             return (
@@ -410,7 +419,7 @@ function EventosCosmicos({ sunSign }) {
 
                 <div>
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <span className="text-base">{ev.emoji}</span>
+                    <TimelineIcon size={16} className="text-selene-gold" />
                     <span className="text-[11px] font-semibold text-selene-gold tracking-wide">{formatEventDate(ev.date)}</span>
                     {isToday && (
                       <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-selene-gold text-selene-bg">HOY</span>
@@ -456,12 +465,15 @@ function EventosCosmicos({ sunSign }) {
       {past.length > 0 && (
         <div className="mt-4 pt-4 border-t border-selene-border">
           <p className="text-[10px] text-selene-white-dim/50 uppercase tracking-wider mb-2">Recientes</p>
-          {past.map((ev, i) => (
-            <div key={`past-${i}`} className="flex items-center gap-2 mb-1.5 opacity-40">
-              <span className="text-sm">{ev.emoji}</span>
-              <span className="text-[11px] text-selene-white-dim">{formatEventDate(ev.date)} — {ev.title}</span>
-            </div>
-          ))}
+          {past.map((ev, i) => {
+            const PastIcon = getEventIcon(ev.type);
+            return (
+              <div key={`past-${i}`} className="flex items-center gap-2 mb-1.5 opacity-40">
+                <PastIcon size={14} className="text-selene-white-dim" />
+                <span className="text-[11px] text-selene-white-dim">{formatEventDate(ev.date)} — {ev.title}</span>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -483,7 +495,7 @@ function SignDetailsPanel({ signName, signElement }) {
       <div className="grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-selene-elevated/50 border border-selene-border p-3">
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-base">{elemInfo?.emoji || '✦'}</span>
+            {(() => { const ElemIcon = elemInfo?.IconComp || IconStar; return <ElemIcon size={16} className="text-selene-gold" />; })()}
             <span className="text-[11px] font-semibold text-selene-gold tracking-wide uppercase">Tu elemento</span>
           </div>
           <p className="text-[13px] font-medium text-selene-white mb-0.5">{signElement}</p>
@@ -505,7 +517,7 @@ function SignDetailsPanel({ signName, signElement }) {
       {/* Dato clave */}
       <div className="rounded-xl bg-selene-gold/5 border border-selene-gold/15 p-3.5">
         <div className="flex items-start gap-2.5">
-          <span className="text-base shrink-0 mt-0.5">🔬</span>
+          <IconSparkle size={16} className="text-selene-gold shrink-0 mt-0.5" />
           <div>
             <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-selene-gold block mb-1">Dato clave</span>
             <p className="text-[12px] text-selene-white/80 leading-relaxed italic">{details.fact}</p>
@@ -707,7 +719,7 @@ export default function MiSelenePage() {
   const emptyReadingPreviews = [
     {
       id: 'carta-completa',
-      icon: '🌙',
+      IconComp: IconMoonCustom,
       title: 'Tu Carta Completa',
       price: '7,99',
       desc: 'Lo que los planetas dicen de ti',
@@ -715,7 +727,7 @@ export default function MiSelenePage() {
     },
     {
       id: 'compatibilidad',
-      icon: '💫',
+      IconComp: IconConjunction,
       title: 'Compatibilidad',
       price: '9,99',
       desc: 'La quimica cosmica entre dos personas',
@@ -723,7 +735,7 @@ export default function MiSelenePage() {
     },
     {
       id: 'tarot-profunda',
-      icon: '🃏',
+      IconComp: IconTarot,
       title: 'Tarot',
       price: '1,99',
       desc: '3 cartas, 3 respuestas',
@@ -772,7 +784,10 @@ export default function MiSelenePage() {
         {/* ═══ Dato del dia ═══ */}
         <Card className="p-4 mb-8 border-selene-gold/10 bg-gradient-to-r from-selene-gold/5 to-transparent">
           <div className="flex items-start gap-3">
-            <span className="text-2xl shrink-0">{dato.emoji}</span>
+            {(() => {
+              const DatoIcon = DATO_ICON_MAP[dato.icon] || IconStar;
+              return <DatoIcon size={22} className="text-selene-gold shrink-0 mt-0.5" />;
+            })()}
             <div>
               <p className="text-[10px] text-selene-gold font-semibold tracking-[0.1em] uppercase mb-1">Dato del dia</p>
               <p className="text-[13px] text-selene-white/85 leading-relaxed">{dato.text}</p>
@@ -837,7 +852,7 @@ export default function MiSelenePage() {
                 {!onboardResult ? (
                   /* Date picker onboarding */
                   <div className="text-center">
-                    <div className="text-5xl mb-4">✨</div>
+                    <div className="mb-4"><IconSparkle size={48} className="text-selene-gold mx-auto" /></div>
                     <h3 className="font-display text-xl text-selene-white mb-2">
                       Completa tu perfil para desbloquear tu experiencia personalizada
                     </h3>
@@ -955,7 +970,7 @@ export default function MiSelenePage() {
           <Card className="mb-8 overflow-hidden">
             {readings.map((reading, i) => {
               const readingMeta = READINGS.find(r => r.id === reading.reading_type);
-              const icon = READING_ICONS[reading.reading_type] || '📜';
+              const ReadingIconComp = getReadingIcon(reading.reading_type);
               const date = new Date(reading.created_at).toLocaleDateString('es-ES', {
                 day: 'numeric',
                 month: 'short',
@@ -969,7 +984,7 @@ export default function MiSelenePage() {
                     i > 0 ? 'border-t border-selene-border' : ''
                   }`}
                 >
-                  <span className="text-lg shrink-0">{icon}</span>
+                  <ReadingIconComp size={18} className="text-selene-gold shrink-0" />
                   <div className="flex-1 min-w-0">
                     <div className="text-sm text-selene-white truncate">
                       {readingMeta?.title || reading.reading_type}
@@ -990,7 +1005,7 @@ export default function MiSelenePage() {
                   <div className={`absolute inset-0 bg-gradient-to-b ${preview.gradient} pointer-events-none`} />
                   <div className="relative">
                     <div className="flex justify-between items-start mb-3">
-                      <span className="text-[28px]">{preview.icon}</span>
+                      <preview.IconComp size={28} className="text-selene-gold" />
                       <span className="font-display text-sm font-semibold text-selene-gold">
                         {preview.price} &euro;
                       </span>
@@ -1018,7 +1033,7 @@ export default function MiSelenePage() {
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-purple-500/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">
-                <span className="text-4xl shrink-0">🃏</span>
+                <IconTarot size={36} className="text-selene-gold shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-display text-base text-selene-white mb-0.5 group-hover:text-selene-gold transition-colors">Tarot</h3>
                   <p className="text-[12px] text-selene-white-dim leading-relaxed">
@@ -1036,7 +1051,7 @@ export default function MiSelenePage() {
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-transparent to-pink-500/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">
-                <span className="text-4xl shrink-0">💫</span>
+                <IconConjunction size={36} className="text-selene-gold shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-display text-base text-selene-white mb-0.5 group-hover:text-selene-gold transition-colors">Compatibilidad</h3>
                   <p className="text-[12px] text-selene-white-dim leading-relaxed">
@@ -1054,7 +1069,7 @@ export default function MiSelenePage() {
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-blue-500/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">
-                <span className="text-4xl shrink-0">💤</span>
+                <IconDream size={36} className="text-selene-gold shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-display text-base text-selene-white mb-0.5 group-hover:text-selene-gold transition-colors">Interpretacion de Suenos</h3>
                   <p className="text-[12px] text-selene-white-dim leading-relaxed">
@@ -1072,7 +1087,7 @@ export default function MiSelenePage() {
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-selene-gold/8 via-transparent to-selene-gold/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">
-                <span className="text-4xl shrink-0">🌟</span>
+                <IconStar size={36} className="text-selene-gold shrink-0" />
                 <div className="flex-1">
                   <h3 className="font-display text-base text-selene-white mb-0.5 group-hover:text-selene-gold transition-colors">Academia</h3>
                   <p className="text-[12px] text-selene-white-dim leading-relaxed">

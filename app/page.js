@@ -2,6 +2,11 @@ import Link from 'next/link';
 import { Navbar, Card, ArrowIcon, MoonIcon } from '@/components/ui';
 import LecturaExpressForm from '@/components/LecturaExpressForm';
 import { getUpcomingEvents, getImpactColor, getTypeLabel, formatEventDate, daysUntil } from '@/lib/cosmic-calendar';
+import {
+  IconConstellation, IconConjunction, IconTarot, IconDream,
+  IconStar, IconMoon as IconMoonCustom,
+  getEventIcon,
+} from '@/components/icons';
 
 export default function HomePage() {
   const testimonials = [
@@ -25,7 +30,7 @@ export default function HomePage() {
   const premiumReadings = [
     {
       id: 'carta-completa',
-      icon: '\u{1F319}',
+      IconComp: IconConstellation,
       title: 'Carta Completa',
       desc: 'Todos los planetas, casas y aspectos de tu cielo natal',
       preview: 'Incluye tu Sol, Luna, Ascendente y los 10 planetas con sus aspectos principales.',
@@ -35,7 +40,7 @@ export default function HomePage() {
     },
     {
       id: 'compatibilidad',
-      icon: '\u{1F4AB}',
+      IconComp: IconConjunction,
       title: 'Compatibilidad',
       desc: 'La quimica cosmica entre dos personas',
       preview: 'Sinastria completa: donde conectais, donde hay friccion y como crecer juntos.',
@@ -45,7 +50,7 @@ export default function HomePage() {
     },
     {
       id: 'tarot-profunda',
-      icon: '\u{1F0CF}',
+      IconComp: IconTarot,
       title: 'Tarot',
       desc: '3 cartas, 3 respuestas. Pasado, presente y futuro',
       preview: 'Tirada personalizada con interpretacion profunda de cada arcano.',
@@ -55,7 +60,7 @@ export default function HomePage() {
     },
     {
       id: 'suenos',
-      icon: '\u{1F4A4}',
+      IconComp: IconDream,
       title: 'Interpretacion de Suenos',
       desc: 'Descifra el lenguaje de tu inconsciente',
       preview: 'Analisis simbolico conectado con tu carta natal y tus transitos actuales.',
@@ -328,7 +333,7 @@ export default function HomePage() {
                   </div>
                 )}
                 <div className="flex justify-between items-start mb-3">
-                  <span className="text-[32px]">{reading.icon}</span>
+                  <reading.IconComp size={32} className="text-selene-gold" />
                   <span className="font-display text-xl font-semibold text-selene-gold">
                     {reading.price} &euro;
                   </span>
@@ -380,10 +385,11 @@ export default function HomePage() {
             const days = daysUntil(ev.date);
             const impact = getImpactColor(ev.impact);
             const typeLabel = getTypeLabel(ev.type);
+            const EvIcon = getEventIcon(ev.type);
             return (
               <Card key={i} className={`p-5 card-lift ${ev.impact === 'alto' ? 'border-selene-gold/20' : ''}`}>
                 <div className="flex items-start gap-4">
-                  <div className="text-3xl shrink-0 mt-1">{ev.emoji}</div>
+                  <EvIcon size={28} className="text-selene-gold shrink-0 mt-1" />
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1 flex-wrap">
                       <span className="text-[12px] font-semibold text-selene-gold">{formatEventDate(ev.date)}</span>
@@ -490,7 +496,7 @@ export default function HomePage() {
         <Card className="p-8 text-center border-selene-gold/15 relative overflow-hidden constellation-bg">
           <div className="absolute inset-0 bg-gradient-to-b from-selene-gold/5 to-transparent pointer-events-none" />
           <div className="relative">
-            <div className="text-4xl mb-4">{'\u{1F31F}'}</div>
+            <div className="mb-4"><IconStar size={40} className="text-selene-gold mx-auto" /></div>
             <p className="text-[11px] text-selene-gold font-semibold tracking-[0.15em] uppercase mb-2">
               Formacion
             </p>
@@ -518,7 +524,7 @@ export default function HomePage() {
 
       {/* ======= Section 7: Final CTA ======= */}
       <section className="max-w-[480px] mx-auto px-6 py-16 text-center">
-        <div className="text-5xl mb-5">{'\u{1F319}'}</div>
+        <div className="mb-5"><IconMoonCustom size={48} className="text-selene-gold mx-auto" /></div>
         <h2 className="font-display text-3xl font-light text-selene-white mb-3">
           Tus estrellas llevan esperandote toda la vida
         </h2>
