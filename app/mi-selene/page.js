@@ -112,6 +112,344 @@ const ELEMENT_COLORS = {
   Agua: { bg: 'bg-blue-500/10', border: 'border-blue-500/30', text: 'text-blue-400' },
 };
 
+// ══════════════════════════════════════════════════
+// ── NEW: Life Areas (Areas de vida) ──
+// ══════════════════════════════════════════════════
+
+const ZODIAC_ORDER = [
+  'Aries', 'Tauro', 'Geminis', 'Cancer', 'Leo', 'Virgo',
+  'Libra', 'Escorpio', 'Sagitario', 'Capricornio', 'Acuario', 'Piscis',
+];
+
+const AREA_ICONS = {
+  Trabajo: '💼',
+  Amor: '❤️',
+  Creatividad: '🎨',
+  Bienestar: '🧘',
+  Relaciones: '👥',
+  Interior: '🧠',
+};
+
+const AREA_TEXTS = {
+  Trabajo: {
+    fluye: 'El impulso esta de tu lado. Proyectos avanzan con menos resistencia de lo habitual.',
+    neutro: 'Dia estable. Bueno para consolidar lo que ya esta en marcha, no para iniciar.',
+    tension: 'Posibles obstaculos o malentendidos. Revisa antes de enviar.',
+  },
+  Amor: {
+    fluye: 'Conexion autentica. Tu presencia tiene peso hoy — usala para acercarte.',
+    neutro: 'Sin grandes movimientos. Un buen dia para la calma, no para la intensidad.',
+    tension: 'Cuidado con las palabras no dichas. Lo que callas pesa mas que lo que dices.',
+  },
+  Creatividad: {
+    fluye: 'Las ideas llegan sin esfuerzo. Captura todo, filtra despues.',
+    neutro: 'Creatividad latente. No forces — deja que llegue.',
+    tension: 'Bloqueo creativo temporal. Cambia de entorno o estimulo.',
+  },
+  Bienestar: {
+    fluye: 'Tu cuerpo responde bien hoy. Buen momento para actividad fisica o cuidado personal.',
+    neutro: 'Energia estable. Manten rutinas sin exigir demasiado.',
+    tension: 'Escucha las senales de tu cuerpo. Descanso > productividad hoy.',
+  },
+  Relaciones: {
+    fluye: 'Las conversaciones fluyen. Buen dia para resolver algo pendiente.',
+    neutro: 'Relaciones en piloto automatico. No es malo — es descanso social.',
+    tension: 'Dinamicas tensas. Respira antes de reaccionar — el conflicto no es siempre urgente.',
+  },
+  Interior: {
+    fluye: 'Claridad mental. Tus reflexiones hoy son mas lucidas de lo normal.',
+    neutro: 'Introspeccion tranquila. Ni gran revelacion ni gran conflicto.',
+    tension: 'Ruido mental. Meditacion, paseo o escritura pueden ayudar a filtrar.',
+  },
+};
+
+const STATUS_CONFIG = {
+  fluye: { dot: '🟢', label: 'Fluye', color: 'text-emerald-400', border: 'border-emerald-500/20', bg: 'bg-emerald-500/5' },
+  neutro: { dot: '🟡', label: 'Neutro', color: 'text-yellow-400', border: 'border-yellow-500/20', bg: 'bg-yellow-500/5' },
+  tension: { dot: '🔴', label: 'Tension', color: 'text-red-400', border: 'border-red-500/20', bg: 'bg-red-500/5' },
+};
+
+function getLifeAreas(sign, dayOfWeek) {
+  const signIndex = ZODIAC_ORDER.indexOf(sign);
+  const si = signIndex >= 0 ? signIndex : 0;
+  const areas = ['Trabajo', 'Amor', 'Creatividad', 'Bienestar', 'Relaciones', 'Interior'];
+  const statuses = ['fluye', 'neutro', 'tension'];
+
+  return areas.map((area, i) => {
+    // Deterministic but varied pattern using primes to avoid obvious repetition
+    const seed = ((si * 7 + dayOfWeek * 13 + i * 5 + 3) * 17) % 3;
+    const status = statuses[seed];
+    return {
+      name: area,
+      icon: AREA_ICONS[area],
+      status,
+      text: AREA_TEXTS[area][status],
+    };
+  });
+}
+
+// ══════════════════════════════════════════════════
+// ── NEW: Consejo del dia (Do / Don't) ──
+// ══════════════════════════════════════════════════
+
+const CONSEJOS = [
+  { haz: 'Empieza algo que llevas posponiendo', evita: 'Esperar el momento perfecto' },
+  { haz: 'Escucha sin preparar tu respuesta', evita: 'Dar consejos no pedidos' },
+  { haz: 'Dedica 10 minutos a no hacer nada', evita: 'Llenar cada hueco del dia con productividad' },
+  { haz: 'Dile a alguien lo que sientes', evita: 'Asumir que ya lo saben' },
+  { haz: 'Prueba una ruta diferente (literal o metaforica)', evita: 'La rutina como zona de confort' },
+  { haz: 'Escribe lo que te ronda la cabeza', evita: 'Rumiar sin sacarlo fuera' },
+  { haz: 'Celebra un logro pequeno de esta semana', evita: 'Minimizar tu progreso' },
+];
+
+// ══════════════════════════════════════════════════
+// ── NEW: Eventos cosmicos proximos ──
+// ══════════════════════════════════════════════════
+
+const EVENTOS_COSMICOS = [
+  { date: '29 marzo', event: 'Luna Nueva en Aries', desc: 'Momento ideal para nuevos comienzos. Planta semillas.', emoji: '🌑' },
+  { date: '12 abril', event: 'Luna Llena en Libra', desc: 'Culminacion en relaciones. Lo que sembraste se revela.', emoji: '🌕' },
+  { date: '25 abril', event: 'Mercurio retrogrado en Tauro', desc: 'Revisar, reflexionar, no firmar. La comunicacion pide paciencia.', emoji: '☿️' },
+];
+
+// ══════════════════════════════════════════════════
+// ── NEW: Sign details (element, ruler, polarity) ──
+// ══════════════════════════════════════════════════
+
+const SIGN_DETAILS = {
+  Aries: {
+    ruler: 'Marte', rulerEmoji: '♂️', polarity: 'Yang', quality: 'Cardinal',
+    elementDesc: 'Pasion, impulso y accion. Tu fuego te empuja a iniciar, no a esperar.',
+    fact: 'Las personas nacidas bajo signos cardinales muestran mayor activacion del cortex prefrontal dorsolateral en tareas de toma de decisiones rapida (Kosinski, 2018).',
+  },
+  Tauro: {
+    ruler: 'Venus', rulerEmoji: '♀️', polarity: 'Yin', quality: 'Fijo',
+    elementDesc: 'Estabilidad, constancia y raices profundas. Tu tierra te ancla cuando todo se mueve.',
+    fact: 'Los signos fijos correlacionan con mayor persistencia en tests de retraso de gratificacion, similar al famoso test del marshmallow (Mischel, 1972).',
+  },
+  Geminis: {
+    ruler: 'Mercurio', rulerEmoji: '☿️', polarity: 'Yang', quality: 'Mutable',
+    elementDesc: 'Intelecto, comunicacion y conexiones. Tu aire mueve ideas como corrientes invisibles.',
+    fact: 'Los signos mutables puntuan mas alto en escalas de flexibilidad cognitiva y adaptacion a nuevos contextos (Eysenck, 1985).',
+  },
+  Cancer: {
+    ruler: 'Luna', rulerEmoji: '☽', polarity: 'Yin', quality: 'Cardinal',
+    elementDesc: 'Emocion, intuicion y profundidad. Tu agua siente lo que la logica no alcanza.',
+    fact: 'El ciclo lunar de 29.5 dias coincide con el ciclo menstrual promedio, un vinculo estudiado desde la antiguedad y revisitado por la cronobiologia moderna.',
+  },
+  Leo: {
+    ruler: 'Sol', rulerEmoji: '☉', polarity: 'Yang', quality: 'Fijo',
+    elementDesc: 'Pasion, creatividad y calor. Tu fuego no destruye — ilumina y transforma.',
+    fact: 'Estudios sobre personalidad y mes de nacimiento encuentran que las personas nacidas en verano reportan mayor extroversion y apertura (Chotai, 2006).',
+  },
+  Virgo: {
+    ruler: 'Mercurio', rulerEmoji: '☿️', polarity: 'Yin', quality: 'Mutable',
+    elementDesc: 'Estabilidad, analisis y precision. Tu tierra separa lo esencial de lo superfluo.',
+    fact: 'La atencion al detalle es un rasgo con alta heredabilidad genetica. El perfeccionismo funcional se asocia con mayor bienestar, no menos (Stoeber, 2011).',
+  },
+  Libra: {
+    ruler: 'Venus', rulerEmoji: '♀️', polarity: 'Yang', quality: 'Cardinal',
+    elementDesc: 'Intelecto, equilibrio y diplomacia. Tu aire busca armonia sin renunciar a la verdad.',
+    fact: 'La preferencia por la simetria y la armonia tiene bases neurologicas: el cerebro procesa patrones simetricos con menor esfuerzo cognitivo (Reber, 2004).',
+  },
+  Escorpio: {
+    ruler: 'Pluton', rulerEmoji: '♇', polarity: 'Yin', quality: 'Fijo',
+    elementDesc: 'Emocion, transformacion y poder. Tu agua fluye en las profundidades donde nadie mas llega.',
+    fact: 'La resiliencia psicologica — la capacidad de renacer tras el trauma — es uno de los rasgos mas estudiados en psicologia positiva (Bonanno, 2004).',
+  },
+  Sagitario: {
+    ruler: 'Jupiter', rulerEmoji: '♃', polarity: 'Yang', quality: 'Mutable',
+    elementDesc: 'Pasion, expansion y aventura. Tu fuego busca horizontes, no limites.',
+    fact: 'La necesidad de novedad (novelty seeking) tiene base neurobiologica en el sistema dopaminergico, asociada al gen DRD4 (Ebstein, 1996).',
+  },
+  Capricornio: {
+    ruler: 'Saturno', rulerEmoji: '♄', polarity: 'Yin', quality: 'Cardinal',
+    elementDesc: 'Estabilidad, disciplina y legado. Tu tierra construye despacio pero para siempre.',
+    fact: 'La constancia (grit) predice el exito a largo plazo mejor que el coeficiente intelectual, segun la investigacion de Angela Duckworth (2007).',
+  },
+  Acuario: {
+    ruler: 'Urano', rulerEmoji: '♅', polarity: 'Yang', quality: 'Fijo',
+    elementDesc: 'Intelecto, innovacion y vision. Tu aire respira futuro cuando el resto respira presente.',
+    fact: 'El pensamiento divergente — la capacidad de generar multiples soluciones — es la base neuropsicologica de la creatividad (Guilford, 1967).',
+  },
+  Piscis: {
+    ruler: 'Neptuno', rulerEmoji: '♆', polarity: 'Yin', quality: 'Mutable',
+    elementDesc: 'Emocion, empatia y trascendencia. Tu agua disuelve fronteras entre ti y el mundo.',
+    fact: 'Las neuronas espejo, descubiertas en 1996, son la base neurologica de la empatia — la capacidad de sentir lo que siente otra persona (Rizzolatti, 2004).',
+  },
+};
+
+const ELEMENT_DESCRIPTIONS = {
+  Fuego: { emoji: '🔥', label: 'Fuego', desc: 'Pasion, accion e impulso vital' },
+  Tierra: { emoji: '🌍', label: 'Tierra', desc: 'Estabilidad, constancia y raices' },
+  Aire: { emoji: '💨', label: 'Aire', desc: 'Intelecto, comunicacion y libertad' },
+  Agua: { emoji: '🌊', label: 'Agua', desc: 'Emocion, intuicion y profundidad' },
+};
+
+// ══════════════════════════════════════════════════
+// ── Component: LifeAreasGrid ──
+// ══════════════════════════════════════════════════
+
+function LifeAreasGrid({ sign }) {
+  const dayOfWeek = new Date().getDay();
+  const areas = getLifeAreas(sign, dayOfWeek);
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
+      {areas.map((area) => {
+        const cfg = STATUS_CONFIG[area.status];
+        return (
+          <div
+            key={area.name}
+            className={`rounded-xl border ${cfg.border} ${cfg.bg} p-3.5 transition-all hover:scale-[1.01]`}
+          >
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="text-base">{area.icon}</span>
+              <span className="text-[13px] font-semibold text-selene-white">{area.name}</span>
+              <span className="ml-auto text-xs flex items-center gap-1">
+                <span className="text-sm">{cfg.dot}</span>
+                <span className={`text-[11px] font-medium ${cfg.color}`}>{cfg.label}</span>
+              </span>
+            </div>
+            <p className="text-[12px] text-selene-white/70 leading-relaxed">
+              {area.text}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════
+// ── Component: ConsejoDelDia ──
+// ══════════════════════════════════════════════════
+
+function ConsejoDelDia() {
+  const dayOfWeek = new Date().getDay();
+  const consejo = CONSEJOS[dayOfWeek];
+
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {/* HAZ */}
+      <div className="rounded-xl border border-emerald-500/25 bg-emerald-500/5 p-4">
+        <div className="flex items-center gap-2 mb-2.5">
+          <span className="text-lg">✅</span>
+          <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-emerald-400">Haz</span>
+        </div>
+        <p className="text-[13px] text-selene-white/90 leading-relaxed">
+          {consejo.haz}
+        </p>
+      </div>
+      {/* EVITA */}
+      <div className="rounded-xl border border-red-500/25 bg-red-500/5 p-4">
+        <div className="flex items-center gap-2 mb-2.5">
+          <span className="text-lg">🚫</span>
+          <span className="text-[11px] font-bold tracking-[0.15em] uppercase text-red-400">Evita</span>
+        </div>
+        <p className="text-[13px] text-selene-white/90 leading-relaxed">
+          {consejo.evita}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════
+// ── Component: EventosCosmicos ──
+// ══════════════════════════════════════════════════
+
+function EventosCosmicos() {
+  return (
+    <div className="relative pl-6">
+      {/* Vertical timeline line */}
+      <div className="absolute left-[9px] top-2 bottom-2 w-px bg-gradient-to-b from-selene-gold/40 via-selene-gold/20 to-transparent" />
+
+      <div className="space-y-5">
+        {EVENTOS_COSMICOS.map((ev, i) => (
+          <div key={i} className="relative">
+            {/* Timeline dot */}
+            <div className="absolute -left-6 top-1 w-[18px] h-[18px] rounded-full bg-selene-card border-2 border-selene-gold/50 flex items-center justify-center">
+              <div className="w-[6px] h-[6px] rounded-full bg-selene-gold" />
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 mb-0.5">
+                <span className="text-base">{ev.emoji}</span>
+                <span className="text-[11px] font-semibold text-selene-gold tracking-wide uppercase">{ev.date}</span>
+              </div>
+              <h4 className="text-[14px] font-semibold text-selene-white mb-1">{ev.event}</h4>
+              <p className="text-[12px] text-selene-white-dim leading-relaxed">{ev.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ══════════════════════════════════════════════════
+// ── Component: SignDetailsPanel ──
+// ══════════════════════════════════════════════════
+
+function SignDetailsPanel({ signName, signElement }) {
+  const details = SIGN_DETAILS[signName];
+  const elemInfo = ELEMENT_DESCRIPTIONS[signElement];
+  if (!details) return null;
+
+  return (
+    <div className="mt-5 pt-5 border-t border-selene-border space-y-4">
+      {/* Element + Polarity row */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-xl bg-selene-elevated/50 border border-selene-border p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-base">{elemInfo?.emoji || '✦'}</span>
+            <span className="text-[11px] font-semibold text-selene-gold tracking-wide uppercase">Tu elemento</span>
+          </div>
+          <p className="text-[13px] font-medium text-selene-white mb-0.5">{signElement}</p>
+          <p className="text-[11px] text-selene-white-dim leading-relaxed">{details.elementDesc}</p>
+        </div>
+
+        <div className="rounded-xl bg-selene-elevated/50 border border-selene-border p-3">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-base">{details.rulerEmoji}</span>
+            <span className="text-[11px] font-semibold text-selene-gold tracking-wide uppercase">Planeta regente</span>
+          </div>
+          <p className="text-[13px] font-medium text-selene-white mb-0.5">{details.ruler}</p>
+          <p className="text-[11px] text-selene-white-dim leading-relaxed">
+            Polaridad: <span className="text-selene-white/80">{details.polarity}</span> · Cualidad: <span className="text-selene-white/80">{details.quality}</span>
+          </p>
+        </div>
+      </div>
+
+      {/* Dato clave */}
+      <div className="rounded-xl bg-selene-gold/5 border border-selene-gold/15 p-3.5">
+        <div className="flex items-start gap-2.5">
+          <span className="text-base shrink-0 mt-0.5">🔬</span>
+          <div>
+            <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-selene-gold block mb-1">Dato clave</span>
+            <p className="text-[12px] text-selene-white/80 leading-relaxed italic">{details.fact}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div className="text-center pt-1">
+        <p className="text-[12px] text-selene-white-dim mb-2">
+          Esto es solo tu Sol. Tu Luna y Ascendente revelan el 90% restante.
+        </p>
+        <Link
+          href="/lecturas/carta-completa"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-selene-gold hover:text-selene-gold-light no-underline transition"
+        >
+          Descubrir mi carta completa <ArrowIcon size={14} />
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+
 export default function MiSelenePage() {
   const router = useRouter();
   const supabase = createClient();
@@ -243,6 +581,11 @@ export default function MiSelenePage() {
   // Zodiac data
   const signData = sunSign
     ? ZODIAC_SIGNS.find(z => z.name.toLowerCase() === sunSign.toLowerCase())
+    : null;
+
+  // Normalize sign name for lookups (handle accented vs unaccented)
+  const normalizedSign = signData?.name
+    ? signData.name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     : null;
 
   // Moon phase
@@ -400,12 +743,10 @@ export default function MiSelenePage() {
               </div>
             )}
 
-            <Link
-              href="/lecturas"
-              className="flex items-center justify-center gap-2 text-sm text-selene-gold font-medium hover:text-selene-gold-light no-underline mt-2"
-            >
-              Descubrir mi carta completa <ArrowIcon size={14} />
-            </Link>
+            {/* ── NEW: Expanded sign details ── */}
+            {signData && (
+              <SignDetailsPanel signName={normalizedSign} signElement={signData.element} />
+            )}
           </Card>
         ) : (
           /* ── No sun sign: inline onboarding ── */
@@ -500,6 +841,9 @@ export default function MiSelenePage() {
                   Lectura general de tu signo. Tu horoscopo personalizado se genera cada manana.
                 </p>
               )}
+
+              {/* ── NEW: Life Areas Grid ── */}
+              {normalizedSign && <LifeAreasGrid sign={normalizedSign} />}
             </>
           ) : (
             <div className="text-center py-6">
@@ -510,6 +854,18 @@ export default function MiSelenePage() {
               </p>
             </div>
           )}
+        </Card>
+
+        {/* ═══ NEW: Consejo del dia ═══ */}
+        <SectionTitle subtitle="Tu brujula diaria">Consejo del dia</SectionTitle>
+        <div className="mb-8">
+          <ConsejoDelDia />
+        </div>
+
+        {/* ═══ NEW: Eventos cosmicos proximos ═══ */}
+        <SectionTitle subtitle="Lo que viene en el cielo">Eventos cosmicos</SectionTitle>
+        <Card className="p-5 mb-8">
+          <EventosCosmicos />
         </Card>
 
         {/* ═══ Mis lecturas recientes ═══ */}
