@@ -4,13 +4,16 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
 
-// Use service role for webhook (no user context)
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+function getServiceClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
 
 export async function POST(request) {
   const body = await request.text();
@@ -18,7 +21,7 @@ export async function POST(request) {
 
   let event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+    event = getStripe().webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   } catch (err) {
     console.error('Webhook signature verification failed:', err.message);
     return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
@@ -27,6 +30,8 @@ export async function POST(request) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const { user_id, product_type, product_id } = session.metadata;
+
+    const supabase = getServiceClient();
 
     if (product_type === 'reading' && user_id && product_id) {
       // Save reading purchase to history

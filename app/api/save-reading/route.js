@@ -3,11 +3,12 @@ import { NextResponse } from 'next/server';
 
 export const dynamic = 'force-dynamic';
 
-// Use service role for saving readings (may be called from webhook)
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+function getServiceClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
 
 export async function POST(request) {
   try {
@@ -28,6 +29,7 @@ export async function POST(request) {
       );
     }
 
+    const supabase = getServiceClient();
     const { data, error } = await supabase
       .from('readings_history')
       .insert({

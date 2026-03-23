@@ -5,7 +5,9 @@ import { READINGS } from '@/lib/constants';
 
 export const dynamic = 'force-dynamic';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
 
 export async function POST(request) {
   try {
@@ -31,7 +33,7 @@ export async function POST(request) {
         return NextResponse.json({ free: true, reading_id: reading.id });
       }
 
-      const session = await stripe.checkout.sessions.create({
+      const session = await getStripe().checkout.sessions.create({
         payment_method_types: ['card'],
         mode: 'payment',
         customer_email: user.email,
@@ -63,7 +65,7 @@ export async function POST(request) {
 
     // Handle course products (redirect to academy checkout)
     if (product_type === 'course') {
-      const session = await stripe.checkout.sessions.create({
+      const session = await getStripe().checkout.sessions.create({
         payment_method_types: ['card'],
         mode: 'payment',
         customer_email: user.email,
