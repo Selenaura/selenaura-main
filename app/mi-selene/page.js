@@ -499,7 +499,7 @@ function SignDetailsPanel({ signName, signElement }) {
             <span className="text-[11px] font-semibold text-selene-gold tracking-wide uppercase">Tu elemento</span>
           </div>
           <p className="text-[13px] font-medium text-selene-white mb-0.5">{signElement}</p>
-          <p className="text-[11px] text-selene-white-dim leading-relaxed">{details.elementDesc}</p>
+          <p className="text-[11px] text-selene-white-dim leading-relaxed" style={{ textAlign: 'justify' }}>{details.elementDesc}</p>
         </div>
 
         <div className="rounded-xl bg-selene-elevated/50 border border-selene-border p-3">
@@ -520,7 +520,7 @@ function SignDetailsPanel({ signName, signElement }) {
           <IconSparkle size={16} className="text-selene-gold shrink-0 mt-0.5" />
           <div>
             <span className="text-[10px] font-bold tracking-[0.12em] uppercase text-selene-gold block mb-1">Dato clave</span>
-            <p className="text-[12px] text-selene-white/80 leading-relaxed italic">{details.fact}</p>
+            <p className="text-[12px] text-selene-white/80 leading-relaxed italic" style={{ textAlign: 'justify' }}>{details.fact}</p>
           </div>
         </div>
       </div>
@@ -761,6 +761,12 @@ export default function MiSelenePage() {
           </p>
         </div>
 
+        {/* ═══ Eventos cósmicos próximos ═══ */}
+        <SectionTitle subtitle="Lo que viene en el cielo">Eventos cósmicos</SectionTitle>
+        <Card className="p-5 mb-8">
+          <EventosCosmicos sunSign={sunSign} />
+        </Card>
+
         {/* ═══ Quick Stats Bar ═══ */}
         <div className="flex gap-3 mb-8 overflow-x-auto pb-1">
           {signData && (
@@ -790,7 +796,7 @@ export default function MiSelenePage() {
             })()}
             <div>
               <p className="text-[10px] text-selene-gold font-semibold tracking-[0.1em] uppercase mb-1">Dato del dia</p>
-              <p className="text-[13px] text-selene-white/85 leading-relaxed">{dato.text}</p>
+              <p className="text-[13px] text-selene-white/85 leading-relaxed" style={{ textAlign: 'justify' }}>{dato.text}</p>
             </div>
           </div>
         </Card>
@@ -808,7 +814,7 @@ export default function MiSelenePage() {
                 <div className="text-sm font-semibold text-selene-white mb-0.5">
                   ☉ Sol en {sunSign}
                 </div>
-                <p className="text-[12px] text-selene-white-dim leading-relaxed">
+                <p className="text-[12px] text-selene-white-dim leading-relaxed" style={{ textAlign: 'justify' }}>
                   {signData?.description || 'Tu signo solar define tu esencia y tu camino de vida.'}
                 </p>
               </div>
@@ -956,12 +962,6 @@ export default function MiSelenePage() {
         <div className="mb-8">
           <ConsejoDelDia />
         </div>
-
-        {/* ═══ NEW: Eventos cosmicos proximos ═══ */}
-        <SectionTitle subtitle="Lo que viene en el cielo">Eventos cosmicos</SectionTitle>
-        <Card className="p-5 mb-8">
-          <EventosCosmicos sunSign={sunSign} />
-        </Card>
 
         {/* ═══ Mis lecturas recientes ═══ */}
         <SectionTitle subtitle="Tu historial de lecturas">Mis lecturas</SectionTitle>

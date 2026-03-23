@@ -254,7 +254,7 @@ export default function HomePage() {
                   <span key={s} className="text-selene-gold text-xs">{'\u2605'}</span>
                 ))}
               </div>
-              <p className="text-[13px] text-selene-white/90 leading-relaxed mb-3 italic">
+              <p className="text-[13px] text-selene-white/90 leading-relaxed mb-3 italic" style={{ textAlign: 'justify' }}>
                 &ldquo;{t.text}&rdquo;
               </p>
               <p className="text-[11px] text-selene-white-dim">
@@ -293,7 +293,7 @@ export default function HomePage() {
               </div>
               <div className="mb-4">{card.icon}</div>
               <h3 className="text-[16px] font-semibold text-selene-white mb-2 pr-16">{card.title}</h3>
-              <p className="text-[13px] text-selene-white-dim leading-relaxed">
+              <p className="text-[13px] text-selene-white-dim leading-relaxed" style={{ textAlign: 'justify' }}>
                 {card.text}
               </p>
             </div>
@@ -341,10 +341,10 @@ export default function HomePage() {
                 <h3 className="text-[15px] font-semibold text-selene-white mb-1.5 group-hover:text-selene-gold transition-colors">
                   {reading.title}
                 </h3>
-                <p className="text-[13px] text-selene-white-dim leading-relaxed mb-2">
+                <p className="text-[13px] text-selene-white-dim leading-relaxed mb-2" style={{ textAlign: 'justify' }}>
                   {reading.desc}
                 </p>
-                <p className="text-[12px] text-selene-white/50 leading-relaxed italic">
+                <p className="text-[12px] text-selene-white/50 leading-relaxed italic" style={{ textAlign: 'justify' }}>
                   {reading.preview}
                 </p>
                 <div className="flex items-center gap-1.5 mt-4 text-xs text-selene-gold opacity-0 group-hover:opacity-100 transition-opacity">
