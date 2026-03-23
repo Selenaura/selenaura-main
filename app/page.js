@@ -318,7 +318,9 @@ export default function HomePage() {
           {premiumReadings.map(reading => (
             <Link
               key={reading.id}
-              href={`/lecturas/${reading.id}`}
+              href={reading.url || `/lecturas/${reading.id}`}
+              target={reading.url?.startsWith('http') ? '_blank' : undefined}
+              rel={reading.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
               className="no-underline group"
             >
               <div className="bg-selene-card rounded-2xl border-gradient p-5 h-full transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(201,168,76,0.08)] card-lift relative overflow-hidden">

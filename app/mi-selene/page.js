@@ -530,12 +530,14 @@ function SignDetailsPanel({ signName, signElement }) {
         <p className="text-[12px] text-selene-white-dim mb-2">
           Esto es solo tu Sol. Tu Luna y Ascendente revelan el 90% restante.
         </p>
-        <Link
-          href="/lecturas/carta-completa"
+        <a
+          href="https://carta.selenaura.com"
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-sm font-semibold text-selene-gold hover:text-selene-gold-light no-underline transition"
         >
           Descubrir mi carta completa <ArrowIcon size={14} />
-        </Link>
+        </a>
       </div>
     </div>
   );
@@ -1000,7 +1002,7 @@ export default function MiSelenePage() {
           /* Empty state: preview cards */
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
             {emptyReadingPreviews.map(preview => (
-              <Link key={preview.id} href={`/lecturas/${preview.id}`} className="no-underline group">
+              <Link key={preview.id} href={preview.url || `/lecturas/${preview.id}`} className="no-underline group" target={preview.url?.startsWith('http') ? '_blank' : undefined} rel={preview.url?.startsWith('http') ? 'noopener noreferrer' : undefined}>
                 <Card hover className="p-5 h-full relative overflow-hidden">
                   <div className={`absolute inset-0 bg-gradient-to-b ${preview.gradient} pointer-events-none`} />
                   <div className="relative">
@@ -1029,7 +1031,7 @@ export default function MiSelenePage() {
         {/* ═══ Explorar ═══ */}
         <SectionTitle subtitle="Descubre nuevas experiencias">Explorar</SectionTitle>
         <div className="space-y-3 mb-10">
-          <Link href="/lecturas/tarot-profunda" className="no-underline block group">
+          <Link href="https://tarot.selenaura.com" target="_blank" rel="noopener noreferrer" className="no-underline block group">
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-purple-500/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">
@@ -1065,7 +1067,7 @@ export default function MiSelenePage() {
             </Card>
           </Link>
 
-          <Link href="/lecturas/suenos" className="no-underline block group">
+          <Link href="https://suenos.selenaura.com" target="_blank" rel="noopener noreferrer" className="no-underline block group">
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-transparent to-blue-500/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">

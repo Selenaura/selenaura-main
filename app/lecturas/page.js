@@ -89,7 +89,9 @@ export default function LecturasPage() {
               <div className="flex justify-between items-center mt-auto">
                 <span className="text-sm font-bold text-selene-gold">{reading.price_label}</span>
                 <Link
-                  href="/auth?mode=register"
+                  href={reading.url || `/lecturas/${reading.id}`}
+                  target={reading.url?.startsWith('http') ? '_blank' : undefined}
+                  rel={reading.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
                   className="text-sm text-selene-gold font-medium hover:text-selene-gold-light no-underline flex items-center gap-1"
                 >
                   Solicitar <ArrowIcon size={12} />
