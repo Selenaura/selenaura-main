@@ -35,38 +35,42 @@ export default function HomePage() {
       desc: 'Todos los planetas, casas y aspectos de tu cielo natal',
       preview: 'Incluye tu Sol, Luna, Ascendente y los 10 planetas con sus aspectos principales.',
       price: '7,99',
-      badge: 'Lo mas vendido',
+      badge: 'Lo más vendido',
       badgeColor: '#C9A84C',
+      url: 'https://carta.selenaura.com/',
     },
     {
       id: 'compatibilidad',
       IconComp: IconConjunction,
       title: 'Compatibilidad',
-      desc: 'La quimica cosmica entre dos personas',
-      preview: 'Sinastria completa: donde conectais, donde hay friccion y como crecer juntos.',
+      desc: 'La química cósmica entre dos personas',
+      preview: 'Sinastría completa: dónde conectáis, dónde hay fricción y cómo crecer juntos.',
       price: '9,99',
       badge: null,
       badgeColor: null,
+      url: 'https://carta.selenaura.com/',
     },
     {
       id: 'tarot-profunda',
       IconComp: IconTarot,
       title: 'Tarot',
       desc: '3 cartas, 3 respuestas. Pasado, presente y futuro',
-      preview: 'Tirada personalizada con interpretacion profunda de cada arcano.',
+      preview: 'Tirada personalizada con interpretación profunda de cada arcano.',
       price: '1,99',
       badge: null,
       badgeColor: null,
+      url: 'https://tarot.selenaura.com/',
     },
     {
       id: 'suenos',
       IconComp: IconDream,
-      title: 'Interpretacion de Suenos',
+      title: 'Interpretación de Sueños',
       desc: 'Descifra el lenguaje de tu inconsciente',
-      preview: 'Analisis simbolico conectado con tu carta natal y tus transitos actuales.',
+      preview: 'Análisis simbólico conectado con tu carta natal y tus tránsitos actuales.',
       price: '1,99',
       badge: 'Nuevo',
       badgeColor: '#4A6FA5',
+      url: 'https://suenos.selenaura.com/',
     },
   ];
 
@@ -151,8 +155,8 @@ export default function HomePage() {
             {/* Left: Copy */}
             <div className="text-center md:text-left">
               <h1 className="font-display text-3xl md:text-[44px] font-light text-selene-white mb-5 leading-[1.15]">
-                Descubre quien eres{' '}
-                <span className="text-gradient-gold font-normal">segun las estrellas</span>
+                Descubre quién eres{' '}
+                <span className="text-gradient-gold font-normal">según las estrellas</span>
               </h1>
               <p className="text-selene-white-dim text-[16px] max-w-[440px] mb-4 leading-relaxed mx-auto md:mx-0">
                 Introduce tu fecha de nacimiento y Selene te revela tu esencia en 3 segundos.
@@ -163,7 +167,7 @@ export default function HomePage() {
               <div className="flex flex-wrap gap-4 text-[12px] text-selene-white-dim justify-center md:justify-start">
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-selene-gold" />
-                  Resultado instantaneo
+                  Resultado instantáneo
                 </span>
                 <span className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-selene-gold" />
@@ -372,13 +376,13 @@ export default function HomePage() {
       <section className="max-w-[800px] mx-auto px-6 py-16">
         <div className="text-center mb-10">
           <p className="text-[11px] text-selene-gold font-semibold tracking-[0.15em] uppercase mb-3">
-            Calendario cosmico 2026
+            Calendario cósmico 2026
           </p>
           <h2 className="font-display text-3xl font-light text-selene-white">
             Lo que viene en el cielo
           </h2>
           <p className="text-selene-white-dim text-sm mt-3 max-w-[500px] mx-auto">
-            Eventos astronomicos y astrologicos reales. Datos de NASA y observatorios — no predicciones inventadas.
+            Eventos astronómicos y astrológicos reales. Datos de NASA y observatorios — no predicciones inventadas.
           </p>
         </div>
 
@@ -423,6 +427,57 @@ export default function HomePage() {
         <span className="text-selene-gold/40 text-xs">{'\u2726'}</span>
       </div>
 
+      {/* ======= Section: Mercurio Retrógrado ======= */}
+      <section className="max-w-[800px] mx-auto px-6 py-16">
+        <div className="text-center mb-10">
+          <p className="text-[11px] text-selene-gold font-semibold tracking-[0.15em] uppercase mb-3">
+            ☿ Mercurio Retrógrado 2026
+          </p>
+          <h2 className="font-display text-3xl font-light text-selene-white mb-4">
+            ¿Cómo te afecta a ti?
+          </h2>
+          <p className="text-selene-white-dim text-sm max-w-[520px] mx-auto" style={{ textAlign: 'justify' }}>
+            Tres veces al año, Mercurio parece retroceder en el cielo. La comunicación se enreda, los contratos se complican y los malentendidos se multiplican. Pero no afecta igual a todos los signos.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="bg-selene-card rounded-2xl border border-selene-border p-5 text-center opacity-50">
+            <p className="text-[10px] text-selene-white-dim uppercase tracking-wider mb-2">Terminado</p>
+            <p className="font-display text-lg text-selene-white/50">En Piscis</p>
+            <p className="text-[12px] text-selene-white-dim mt-1">Feb → 20 mar 2026</p>
+          </div>
+          <div className="bg-selene-card rounded-2xl border border-selene-gold/30 p-5 text-center glow-gold relative">
+            <span className="absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] font-bold px-3 py-0.5 rounded-full bg-selene-gold text-selene-bg">PRÓXIMO</span>
+            <p className="text-[10px] text-selene-gold uppercase tracking-wider mb-2 mt-1">29 jun → 23 jul</p>
+            <p className="font-display text-lg text-selene-gold">En Cáncer</p>
+            <p className="text-[12px] text-selene-white-dim mt-1">Emociones y familia</p>
+          </div>
+          <div className="bg-selene-card rounded-2xl border border-selene-border p-5 text-center">
+            <p className="text-[10px] text-selene-white-dim uppercase tracking-wider mb-2">Último del año</p>
+            <p className="font-display text-lg text-selene-white">En Escorpio</p>
+            <p className="text-[12px] text-selene-white-dim mt-1">24 oct → nov 2026</p>
+          </div>
+        </div>
+
+        <div className="bg-selene-card rounded-2xl border border-selene-gold/15 p-6 text-center">
+          <p className="text-selene-white text-[15px] mb-4" style={{ textAlign: 'justify' }}>
+            Cada retrógrado activa zonas diferentes de tu carta natal. Tu signo solar determina qué área de tu vida se ve más afectada — y qué puedes hacer para navegar este tránsito con claridad.
+          </p>
+          <Link
+            href="/auth?mode=register"
+            className="inline-block bg-selene-gold text-selene-bg font-semibold text-[14px] px-8 py-3 rounded-xl no-underline hover:bg-selene-gold-light transition-colors"
+          >
+            Quiero saber cómo me afecta ✦
+          </Link>
+          <p className="text-[11px] text-selene-white-dim/50 mt-3">Lectura personalizada gratis · Solo necesitas tu fecha de nacimiento</p>
+        </div>
+      </section>
+
+      <div className="divider-stars">
+        <span className="text-selene-gold/40 text-xs">{'\u2726'}</span>
+      </div>
+
       {/* ======= Section 5: Science Differentiator ======= */}
       <section className="max-w-[800px] mx-auto px-6 py-16">
         <div className="text-center mb-10">
@@ -442,9 +497,9 @@ export default function HomePage() {
             </h3>
             <ul className="space-y-4">
               {[
-                'Predicciones genericas',
-                'Sin base cientifica',
-                'Horoscopo de periodico',
+                'Predicciones genéricas',
+                'Sin base científica',
+                'Horóscopo de periódico',
                 'Solo tu signo solar',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-[14px] text-selene-white-dim/70">
@@ -469,9 +524,9 @@ export default function HomePage() {
               </h3>
               <ul className="space-y-4">
                 {[
-                  'Neurociencia + astrologia',
+                  'Neurociencia + astrología',
                   'Estudios citados en cada lectura',
-                  'Personalizacion por carta natal completa',
+                  'Personalización por carta natal completa',
                   '10 planetas analizados',
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-[14px] text-selene-white">
