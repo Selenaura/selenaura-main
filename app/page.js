@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Navbar, Footer, Card, ArrowIcon, GoldDivider, MoonIcon } from '@/components/ui';
 import { READINGS } from '@/lib/constants';
+import LecturaExpressForm from '@/components/LecturaExpressForm';
 
 export default function HomePage() {
   const freeFeatures = [
@@ -16,32 +17,35 @@ export default function HomePage() {
     <div className="min-h-screen bg-selene-bg">
       <Navbar />
 
-      {/* ── Hero ── */}
+      {/* ── Hero + Lectura Express ── */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 star-pattern" />
         <div className="absolute inset-0 bg-gradient-radial-gold" />
-        <div className="relative max-w-[800px] mx-auto px-6 py-24 md:py-32 text-center">
-          <div className="text-5xl mb-6">🌙</div>
-          <h1 className="font-display text-4xl md:text-5xl font-light text-selene-white mb-5 leading-tight">
-            Tu espacio personal de<br />
-            <span className="text-selene-gold font-normal">consciencia cosmica</span>
-          </h1>
-          <p className="text-selene-white-dim text-base md:text-lg max-w-[520px] mx-auto mb-10 leading-relaxed">
-            Crea tu cuenta gratuita. Descubre tu carta natal, recibe tu horoscopo personalizado y guarda todas tus lecturas.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/auth?mode=register"
-              className="bg-selene-gold text-selene-bg font-semibold text-[15px] px-8 py-3.5 rounded-xl hover:brightness-110 no-underline"
-            >
-              Crear mi cuenta gratis
-            </Link>
-            <Link
-              href="/lecturas"
-              className="border border-selene-gold/30 text-selene-gold font-medium text-[15px] px-8 py-3.5 rounded-xl hover:bg-selene-gold/5 no-underline"
-            >
-              Ver lecturas
-            </Link>
+        <div className="relative max-w-[960px] mx-auto px-6 py-20 md:py-28">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            {/* Left: Copy */}
+            <div className="text-center md:text-left">
+              <div className="text-4xl mb-4">🌙</div>
+              <h1 className="font-display text-3xl md:text-[42px] font-light text-selene-white mb-4 leading-tight">
+                Descubre lo que tus<br />
+                <span className="text-selene-gold font-normal">estrellas revelan</span>
+              </h1>
+              <p className="text-selene-white-dim text-[15px] max-w-[420px] mb-6 leading-relaxed">
+                Recibe una lectura personalizada gratuita basada en tu fecha de nacimiento. Sin registro, sin compromiso — solo tu email.
+              </p>
+              <div className="flex gap-4 text-[11px] text-selene-white-dim">
+                <span>✦ 3 párrafos sobre ti</span>
+                <span>✦ En tu email en minutos</span>
+                <span>✦ 100% gratis</span>
+              </div>
+            </div>
+
+            {/* Right: Form */}
+            <div className="bg-selene-card/80 backdrop-blur-xl rounded-2xl border border-selene-border p-6">
+              <h2 className="font-display text-lg text-selene-white mb-1 text-center">Tu Lectura Express</h2>
+              <p className="text-[12px] text-selene-white-dim mb-5 text-center">Selene lee tu cielo y te cuenta lo que ve</p>
+              <LecturaExpressForm />
+            </div>
           </div>
         </div>
       </section>
