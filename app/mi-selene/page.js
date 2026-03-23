@@ -52,14 +52,14 @@ function getMoonPhaseName(phase) {
 
 // ── Reading type icons ──
 const READING_ICONS = {
-  'lectura-express': '\u26A1',
-  'carta-basica': '\u2609',
-  'carta-completa': '\uD83C\uDF19',
-  'carta-premium': '\u2726',
-  'compatibilidad': '\uD83D\uDCAB',
-  'tarot-profunda': '\u2728',
-  'quirologia': '\uD83E\uDD1A',
-  'suenos': '\uD83D\uDCA4',
+  'lectura-express': '⚡',
+  'carta-basica': '☉',
+  'carta-completa': '🌙',
+  'carta-premium': '✦',
+  'compatibilidad': '💫',
+  'tarot-profunda': '✨',
+  'quirologia': '🤚',
+  'suenos': '💤',
 };
 
 // ── Energy dots ──
@@ -233,7 +233,7 @@ export default function MiSelenePage() {
                 <div className="text-3xl shrink-0">{signData?.emoji || '\u2609'}</div>
                 <div>
                   <div className="text-sm font-semibold text-selene-white mb-0.5">
-                    \u2609 Sol en {sunSign}
+                    {'☉'} Sol en {sunSign}
                   </div>
                   <p className="text-[12px] text-selene-white-dim leading-relaxed">
                     {signData?.description || 'Tu signo solar define tu esencia y tu camino de vida.'}
@@ -244,14 +244,14 @@ export default function MiSelenePage() {
               {/* Moon and Rising */}
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="text-2xl text-selene-white-dim">\u263D</div>
+                  <div className="text-2xl text-selene-white-dim">{'☽'}</div>
                   <div>
                     <div className="text-[13px] font-semibold text-selene-white">{moonSign || '\u2014'}</div>
                     <div className="text-[11px] text-selene-white-dim">Luna</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="text-2xl text-selene-white-dim">\u2191</div>
+                  <div className="text-2xl text-selene-white-dim">{'↑'}</div>
                   <div>
                     <div className="text-[13px] font-semibold text-selene-white">{risingSign || '\u2014'}</div>
                     <div className="text-[11px] text-selene-white-dim">Ascendente</div>
@@ -274,7 +274,7 @@ export default function MiSelenePage() {
             </>
           ) : (
             <div className="text-center py-6">
-              <div className="text-4xl mb-3">\u2728</div>
+              <div className="text-4xl mb-3">✨</div>
               <p className="text-sm text-selene-white mb-1">
                 Todavia no conocemos tu signo solar
               </p>
@@ -378,7 +378,7 @@ export default function MiSelenePage() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
           <Link href="/lecturas/tarot" className="no-underline">
             <Card hover className="p-5 text-center h-full">
-              <div className="text-3xl mb-3">{'\uD83C\uDCCF'}</div>
+              <div className="text-3xl mb-3">🃏</div>
               <h3 className="font-display text-base text-selene-white mb-1">Tarot</h3>
               <p className="text-[11px] text-selene-white-dim leading-relaxed">
                 Deja que las cartas revelen lo que necesitas escuchar.
@@ -387,7 +387,7 @@ export default function MiSelenePage() {
           </Link>
           <Link href="/lecturas/compatibilidad" className="no-underline">
             <Card hover className="p-5 text-center h-full">
-              <div className="text-3xl mb-3">{'\uD83D\uDCAB'}</div>
+              <div className="text-3xl mb-3">💫</div>
               <h3 className="font-display text-base text-selene-white mb-1">Compatibilidad</h3>
               <p className="text-[11px] text-selene-white-dim leading-relaxed">
                 Explora la quimica cosmica entre dos personas.
@@ -396,7 +396,7 @@ export default function MiSelenePage() {
           </Link>
           <a href="https://academy.selenaura.com/catalogo" target="_blank" rel="noopener noreferrer" className="no-underline">
             <Card hover className="p-5 text-center h-full">
-              <div className="text-3xl mb-3">{'\uD83C\uDF1F'}</div>
+              <div className="text-3xl mb-3">🌟</div>
               <h3 className="font-display text-base text-selene-white mb-1">Academia</h3>
               <p className="text-[11px] text-selene-white-dim leading-relaxed">
                 Cursos para profundizar en tu autoconocimiento.
