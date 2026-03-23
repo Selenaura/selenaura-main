@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Selene · Panel de control</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0A0A0F; --bg2: #12121A; --bg3: #1A1A25;
+    --gold: #C9A84C; --gold-dim: #8B7535; --white: #F0EDE4;
+    --muted: #8A8A9A; --green: #4CAF50; --red: #E24B4A; --blue: #5B8DEF;
+  }
+  body { background: var(--bg); color: var(--white); font-family: 'Outfit', sans-serif; min-height: 100vh; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
+
+  /* Login */
+  .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
+  .login-box { max-width: 360px; width: 100%; text-align: center; }
+  .login-box h1 { font-size: 2rem; color: var(--gold); margin-bottom: 0.5rem; }
+  .login-box p { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+  .google-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 28px; background: var(--white); color: #333; border: none; border-radius: 8px; font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .google-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(201,168,76,0.2); }
+  .google-btn svg { width: 20px; height: 20px; }
+  .login-error { color: var(--red); font-size: 0.8rem; margin-top: 1rem; display: none; }
+  .login-loading { color: var(--muted); font-size: 0.85rem; margin-top: 1rem; display: none; }
+
+  /* Dashboard */
+  .dashboard { display: none; max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+  .dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #222; flex-wrap: wrap; gap: 8px; }
+  .dash-header h1 { font-size: 1.5rem; color: var(--gold); }
+  .dash-header .meta { font-size: 0.75rem; color: var(--muted); }
+  .header-actions { display: flex; gap: 8px; align-items: center; }
+  .btn-sm { background: none; border: 1px solid var(--gold-dim); color: var(--gold); padding: 6px 14px; border-radius: 6px; font-family: 'Outfit', sans-serif; font-size: 0.8rem; cursor: pointer; transition: background 0.15s; }
+  .btn-sm:hover { background: var(--bg3); }
+  .btn-sm.logout { border-color: #444; color: var(--muted); }
+
+  /* KPI Cards */
+  .metrics { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 2rem; }
+  @media (max-width: 900px) { .metrics { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 560px) { .metrics { grid-template-columns: repeat(2, 1fr); } }
+  .metric { background: var(--bg2); border: 1px solid #222; border-radius: 10px; padding: 1rem; }
+  .metric .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .metric .value { font-size: 1.4rem; font-weight: 500; }
+  .metric .sub { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+  .metric.gold .value { color: var(--gold); }
+  .metric.green .value { color: var(--green); }
+  .metric.blue .value { color: var(--blue); }
+
+  /* Sections */
+  .section { margin-bottom: 2rem; }
+  .section h2 { font-size: 1.2rem; color: var(--gold); margin-bottom: 1rem; }
+
+  /* Funnel */
+  .funnel-wrap { background: var(--bg2); border: 1px solid #222; border-radius: 10px; padding: 1.2rem; }
+  .funnel-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .funnel-bar:last-child { margin-bottom: 0; }
+  .funnel-bar .bar-label { font-size: 0.8rem; color: var(--muted); width: 140px; flex-shrink: 0; }
+  .funnel-bar .bar-track { flex: 1; height: 26px; background: var(--bg); border-radius: 4px; overflow: hidden; }
+  .funnel-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; display: flex; align-items: center; padding-left: 8px; font-size: 0.75rem; font-weight: 500; min-width: fit-content; }
+  .funnel-bar .bar-fill.l { background: var(--blue); }
+  .funnel-bar .bar-fill.e { background: var(--gold); color: var(--bg); }
+  .funnel-bar .bar-fill.c { background: var(--green); }
+
+  /* Charts */
+  .chart-wrap { background: var(--bg2); border: 1px solid #222; border-radius: 10px; padding: 1rem; position: relative; height: 280px; }
+  .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 2rem; }
+  @media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; } }
+
+  /* Tables */
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th { text-align: left; color: var(--muted); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 8px 12px; border-bottom: 1px solid #222; }
+  td { padding: 8px 12px; border-bottom: 1px solid #1a1a22; }
+  .table-wrap { background: var(--bg2); border: 1px solid #222; border-radius: 10px; overflow: hidden; }
+  .tables-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; }
+  @media (max-width: 700px) { .tables-grid { grid-template-columns: 1fr; } }
+
+  /* Products grid */
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  .product-card { background: var(--bg2); border: 1px solid #222; border-radius: 10px; padding: 1rem; }
+  .product-card .product-name { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--white); margin-bottom: 4px; }
+  .product-card .product-price { font-size: 1.1rem; color: var(--gold); font-weight: 500; }
+  .product-card .product-price.no-price { color: var(--muted); font-size: 0.8rem; }
+
+  /* Academia */
+  .academia-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+  .academia-stat { background: var(--bg2); border: 1px solid #222; border-radius: 10px; padding: 1rem; text-align: center; }
+  .academia-stat .stat-value { font-size: 1.5rem; font-weight: 500; color: var(--gold); }
+  .academia-stat .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 4px; }
+
+  /* Status */
+  .status-list { display: grid; gap: 8px; }
+  .status-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg2); border: 1px solid #222; border-radius: 8px; font-size: 0.85rem; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot.ok { background: var(--green); }
+  .dot.warn { background: #F59E0B; }
+  .dot.err { background: var(--red); }
+
+  .empty { color: var(--muted); font-size: 0.85rem; padding: 1.5rem; text-align: center; }
+  .spin { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--gold-dim); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div id="login" class="login-wrap">
+  <div class="login-box">
+    <h1>Selene</h1>
+    <p>Panel de control</p>
+    <button class="google-btn" onclick="signInWithGoogle()">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Entrar con Google
+    </button>
+    <div id="login-err" class="login-error"></div>
+    <div id="login-loading" class="login-loading"><span class="spin"></span> Verificando...</div>
+  </div>
+</div>
+
+<div id="dash" class="dashboard">
+  <div class="dash-header">
+    <div>
+      <h1>Selene - Panel de control</h1>
+      <div class="meta"><span id="user-name"></span> - <span id="updated-at"></span></div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-sm" onclick="loadData()">Actualizar</button>
+      <button class="btn-sm logout" onclick="signOut()">Cerrar sesion</button>
+    </div>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="metrics" id="metrics">
+    <div class="metric gold"><div class="label">Ingresos totales</div><div class="value" id="m-revenue">--</div><div class="sub" id="m-revenue-sub"></div></div>
+    <div class="metric green"><div class="label">Saldo Stripe</div><div class="value" id="m-balance">--</div><div class="sub" id="m-balance-sub"></div></div>
+    <div class="metric"><div class="label">Ventas / AOV</div><div class="value" id="m-sales">--</div><div class="sub" id="m-sales-sub"></div></div>
+    <div class="metric blue"><div class="label">Leads Brevo</div><div class="value" id="m-leads">--</div><div class="sub" id="m-leads-sub"></div></div>
+    <div class="metric"><div class="label">Checkout</div><div class="value" id="m-checkout">--</div><div class="sub" id="m-checkout-sub"></div></div>
+    <div class="metric"><div class="label">Alumnos</div><div class="value" id="m-students">--</div><div class="sub" id="m-students-sub"></div></div>
+  </div>
+
+  <!-- Email Marketing -->
+  <div class="section">
+    <h2>Email marketing</h2>
+    <div class="metrics" style="grid-template-columns: repeat(4, 1fr);" id="email-metrics">
+      <div class="metric"><div class="label">Emails enviados</div><div class="value" id="m-email-sent">--</div><div class="sub" id="m-email-sent-sub"></div></div>
+      <div class="metric green"><div class="label">Tasa apertura</div><div class="value" id="m-email-open">--</div><div class="sub" id="m-email-open-sub"></div></div>
+      <div class="metric blue"><div class="label">Tasa clics</div><div class="value" id="m-email-click">--</div><div class="sub" id="m-email-click-sub"></div></div>
+      <div class="metric"><div class="label">Bajas</div><div class="value" id="m-email-unsub">--</div><div class="sub" id="m-email-unsub-sub"></div></div>
+    </div>
+  </div>
+
+  <!-- Email Funnel Nurture -->
+  <div class="section">
+    <h2>Secuencia de nurturing</h2>
+    <div class="metrics" style="grid-template-columns: repeat(4, 1fr);" id="nurture-metrics">
+      <div class="metric gold"><div class="label">Contactos en secuencia</div><div class="value" id="m-nurture-contacts">--</div><div class="sub" id="m-nurture-contacts-sub"></div></div>
+      <div class="metric green"><div class="label">Emails enviados</div><div class="value" id="m-nurture-sent">--</div><div class="sub" id="m-nurture-sent-sub"></div></div>
+      <div class="metric blue"><div class="label">Pendientes</div><div class="value" id="m-nurture-pending">--</div><div class="sub" id="m-nurture-pending-sub"></div></div>
+      <div class="metric"><div class="label">Progreso</div><div class="value" id="m-nurture-progress">--</div><div class="sub" id="m-nurture-progress-sub"></div></div>
+    </div>
+  </div>
+
+  <!-- New Features -->
+  <div class="section">
+    <h2>Nuevas funcionalidades</h2>
+    <div class="metrics" style="grid-template-columns: repeat(4, 1fr);" id="new-features-metrics">
+      <div class="metric blue"><div class="label">Compatibilidad</div><div class="value" id="m-compat">--</div><div class="sub" id="m-compat-sub"></div></div>
+      <div class="metric green"><div class="label">Horoscopo semanal</div><div class="value" id="m-weekly">--</div><div class="sub" id="m-weekly-sub"></div></div>
+      <div class="metric"><div class="label">Emails en cola</div><div class="value" id="m-queue">--</div><div class="sub" id="m-queue-sub"></div></div>
+      <div class="metric gold"><div class="label">Post-compra enviados</div><div class="value" id="m-postpurchase">--</div><div class="sub" id="m-postpurchase-sub"></div></div>
+    </div>
+  </div>
+
+  <!-- Productos por tipo (compras funnel) -->
+  <div class="section">
+    <h2>Productos (ventas por funnel)</h2>
+    <div class="products-grid" id="funnel-products-grid"></div>
+  </div>
+
+  <!-- Funnel -->
+  <div class="section">
+    <h2>Funnel de conversion</h2>
+    <div class="funnel-wrap" id="funnel-bars"></div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="section">
+      <h2>Actividad diaria (30 dias)</h2>
+      <div class="chart-wrap"><canvas id="dailyChart"></canvas></div>
+    </div>
+    <div class="section">
+      <h2>Signos solares</h2>
+      <div class="chart-wrap"><canvas id="signosChart"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Tables -->
+  <div class="tables-grid">
+    <div class="section">
+      <h2>Ultimas ventas</h2>
+      <div class="table-wrap"><table><thead><tr><th>Importe</th><th>Producto</th><th>Fecha</th></tr></thead><tbody id="tb-sales"></tbody></table></div>
+    </div>
+    <div class="section">
+      <h2>Ultimos leads</h2>
+      <div class="table-wrap"><table><thead><tr><th>Email</th><th>Signo</th><th>Fecha</th></tr></thead><tbody id="tb-leads"></tbody></table></div>
+    </div>
+  </div>
+
+  <!-- Productos -->
+  <div class="section">
+    <h2>Productos</h2>
+    <div class="products-grid" id="products-grid"></div>
+  </div>
+
+  <!-- Academia -->
+  <div class="section">
+    <h2>Academia</h2>
+    <div class="academia-grid" id="academia-grid"></div>
+  </div>
+
+  <!-- Status -->
+  <div class="section">
+    <h2>Estado de sistemas</h2>
+    <div class="status-list" id="status-list"></div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+var SUPABASE_URL = 'https://lerfefvqfwdsubchzqyk.supabase.co';
+var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxlcmZlZnZxZndkc3ViY2h6cXlrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM2NDU2MTIsImV4cCI6MjA4OTIyMTYxMn0.1SJ0CxI3ouJa33RhmvAw9ORGBrADAFS_hn0-yeRX4Xo';
+
+var sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+var dailyChartInstance = null;
+var signosChartInstance = null;
+
+async function init() {
+  var result = await sb.auth.getSession();
+  var session = result.data.session;
+  if (session) {
+    showDashboard(session);
+  }
+
+  sb.auth.onAuthStateChange(function(event, session) {
+    if (event === 'SIGNED_IN' && session) {
+      showDashboard(session);
+    }
+  });
+}
+
+async function signInWithGoogle() {
+  document.getElementById('login-loading').style.display = 'block';
+  document.getElementById('login-err').style.display = 'none';
+
+  var result = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/admin' }
+  });
+
+  if (result.error) {
+    document.getElementById('login-loading').style.display = 'none';
+    document.getElementById('login-err').textContent = result.error.message;
+    document.getElementById('login-err').style.display = 'block';
+  }
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  document.getElementById('dash').style.display = 'none';
+  document.getElementById('login').style.display = 'flex';
+}
+
+async function showDashboard(session) {
+  document.getElementById('login').style.display = 'none';
+  document.getElementById('dash').style.display = 'block';
+  document.getElementById('user-name').textContent = session.user.user_metadata?.full_name || session.user.email;
+  await loadData();
+}
+
+async function loadData() {
+  try {
+    var result = await sb.auth.getSession();
+    var session = result.data.session;
+    if (!session) { signOut(); return; }
+
+    var res = await fetch('/api/admin-data', {
+      headers: { 'Authorization': 'Bearer ' + session.access_token }
+    });
+
+    if (res.status === 403) {
+      document.getElementById('dash').style.display = 'none';
+      document.getElementById('login').style.display = 'flex';
+      document.getElementById('login-err').textContent = 'Tu cuenta no tiene acceso al panel de administracion';
+      document.getElementById('login-err').style.display = 'block';
+      await sb.auth.signOut();
+      return;
+    }
+
+    if (!res.ok) throw new Error('Error ' + res.status);
+
+    var data = await res.json();
+    document.getElementById('updated-at').textContent = new Date(data.generated_at).toLocaleString('es-ES');
+
+    renderMetrics(data);
+    renderNurture(data);
+    renderNewFeatures(data);
+    renderFunnel(data);
+    renderDailyChart(data);
+    renderSignosChart(data);
+    renderSalesTable(data);
+    renderLeadsTable(data);
+    renderProducts(data);
+    renderFunnelProducts(data);
+    renderAcademia(data);
+    renderStatus(data);
+
+  } catch (err) {
+    console.error('Error cargando datos:', err);
+  }
+}
+
+function fmt(cents) {
+  return (cents / 100).toFixed(2).replace('.', ',') + ' \u20AC';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '\u2014';
+  return new Date(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+}
+
+function maskEmail(e) {
+  if (!e) return '\u2014';
+  var parts = e.split('@');
+  if (parts.length !== 2) return '\u2014';
+  return parts[0].slice(0, 3) + '***@' + parts[1];
+}
+
+function renderMetrics(data) {
+  var s = data.stripe || {};
+  var b = data.brevo_contacts || {};
+  var bl = data.brevo_list || {};
+  var a = data.academia || {};
+
+  // Ingresos totales
+  document.getElementById('m-revenue').textContent = s.error ? '!!' : fmt(s.revenue_total_cents || 0);
+  document.getElementById('m-revenue-sub').textContent = s.error ? s.error : 'Este mes: ' + fmt(s.revenue_month_cents || 0);
+
+  // Saldo Stripe
+  document.getElementById('m-balance').textContent = s.error ? '!!' : fmt(s.balance_available || 0);
+  document.getElementById('m-balance-sub').textContent = s.error ? s.error : 'Pendiente: ' + fmt(s.balance_pending || 0);
+
+  // Ventas + AOV
+  document.getElementById('m-sales').textContent = s.error ? '!!' : (s.sales_total || 0);
+  var aovText = s.aov_cents ? 'AOV: ' + fmt(s.aov_cents) : 'Este mes: ' + (s.sales_month || 0);
+  document.getElementById('m-sales-sub').textContent = aovText;
+
+  // Leads Brevo
+  var totalLeads = bl.totalSubscribers || b.total || 0;
+  document.getElementById('m-leads').textContent = b.error ? '!!' : totalLeads;
+  var lcr = b.lcr || 0;
+  document.getElementById('m-leads-sub').textContent = b.error ? b.error : 'LCR: ' + lcr + '% compraron';
+
+  // Checkout conversion
+  document.getElementById('m-checkout').textContent = s.error ? '!!' : (s.checkout_conversion || 0) + '%';
+  document.getElementById('m-checkout-sub').textContent = (s.checkout_paid || 0) + ' pagados / ' + (s.checkout_abandoned || 0) + ' abandonados';
+
+  // Alumnos academia
+  document.getElementById('m-students').textContent = a.error ? '!!' : (a.total_students || 0);
+  document.getElementById('m-students-sub').textContent = 'Matriculas: ' + (a.total_enrollments || 0);
+
+  // Email marketing stats
+  var em = data.brevo_email || {};
+  if (!em.error) {
+    document.getElementById('m-email-sent').textContent = em.sent || 0;
+    document.getElementById('m-email-sent-sub').textContent = 'Entregados: ' + (em.delivered || 0);
+    document.getElementById('m-email-open').textContent = (em.open_rate || 0) + '%';
+    document.getElementById('m-email-open-sub').textContent = (em.opens || 0) + ' aperturas';
+    document.getElementById('m-email-click').textContent = (em.click_rate || 0) + '%';
+    document.getElementById('m-email-click-sub').textContent = (em.clicks || 0) + ' clics';
+    document.getElementById('m-email-unsub').textContent = em.unsubscribes || 0;
+    document.getElementById('m-email-unsub-sub').textContent = 'Tasa: ' + (em.unsubscribe_rate || 0) + '%';
+  } else {
+    document.getElementById('m-email-sent').textContent = '!!';
+    document.getElementById('m-email-sent-sub').textContent = em.error;
+  }
+}
+
+function renderFunnel(data) {
+  var f = data.funnel?.month || {};
+
+  var lecturas = f.lectura_generada || 0;
+  var emails = f.email_capturado || 0;
+  var compras = f.compra || 0;
+
+  // Only show funnel if we have actual tracking data
+  if (lecturas === 0 && emails === 0 && compras === 0) {
+    document.getElementById('funnel-bars').innerHTML = '<div class="empty">El tracking del funnel no esta conectado todavia.<br>Cuando se active, aqui veras: Lecturas → Emails → Compras con tasas de conversion reales.</div>';
+    return;
+  }
+
+  var max = Math.max(lecturas, 1);
+  var convLE = lecturas > 0 ? Math.round((emails / lecturas) * 100) : 0;
+  var convEC = emails > 0 ? Math.round((compras / emails) * 100) : 0;
+
+  var html = '';
+  html += '<div class="funnel-bar"><span class="bar-label">Lecturas</span><div class="bar-track"><div class="bar-fill l" style="width:' + Math.max((lecturas/max)*100, 10) + '%">' + lecturas + '</div></div></div>';
+  html += '<div class="funnel-bar"><span class="bar-label">Emails (' + convLE + '%)</span><div class="bar-track"><div class="bar-fill e" style="width:' + Math.max((emails/max)*100, emails ? 10 : 0) + '%">' + emails + '</div></div></div>';
+  html += '<div class="funnel-bar"><span class="bar-label">Compras (' + convEC + '%)</span><div class="bar-track"><div class="bar-fill c" style="width:' + Math.max((compras/max)*100, compras ? 10 : 0) + '%">' + compras + '</div></div></div>';
+
+  document.getElementById('funnel-bars').innerHTML = html;
+}
+
+function renderDailyChart(data) {
+  var daily = data.funnel?.daily || {};
+  var days = Object.keys(daily).sort();
+  var el = document.getElementById('dailyChart');
+
+  if (!el) return;
+
+  if (days.length === 0) {
+    var parent = el.parentElement;
+    if (parent) parent.innerHTML = '<div class="empty">Sin datos de funnel aun.<br>Apareceran cuando el tracking este conectado.</div>';
+    return;
+  }
+
+  var labels = days.map(function(d) { var dt = new Date(d); return dt.getDate() + '/' + (dt.getMonth()+1); });
+
+  if (dailyChartInstance) dailyChartInstance.destroy();
+  dailyChartInstance = new Chart(el, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Lecturas', data: days.map(function(d) { return daily[d].lectura_generada; }), backgroundColor: '#5B8DEF' },
+        { label: 'Emails', data: days.map(function(d) { return daily[d].email_capturado; }), backgroundColor: '#C9A84C' },
+        { label: 'Compras', data: days.map(function(d) { return daily[d].compra; }), backgroundColor: '#4CAF50' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#8A8A9A', font: { family: 'Outfit', size: 11 } } } },
+      scales: {
+        x: { ticks: { color: '#8A8A9A', font: { size: 10 } }, grid: { color: '#1A1A25' } },
+        y: { beginAtZero: true, ticks: { color: '#8A8A9A', stepSize: 1 }, grid: { color: '#1A1A25' } }
+      }
+    }
+  });
+}
+
+function renderSignosChart(data) {
+  var signos = data.brevo_contacts?.signos || {};
+  var labels = Object.keys(signos);
+  var values = Object.values(signos);
+  var el = document.getElementById('signosChart');
+
+  if (!el) return;
+
+  if (labels.length === 0) {
+    var parent = el.parentElement;
+    if (parent) parent.innerHTML = '<div class="empty">Sin datos de signos en Brevo.</div>';
+    return;
+  }
+
+  var colors = ['#E24B4A','#4CAF50','#C9A84C','#5B8DEF','#F59E0B','#8B5CF6','#EC4899','#14B8A6','#F97316','#6366F1','#22D3EE','#A78BFA'];
+
+  if (signosChartInstance) signosChartInstance.destroy();
+  signosChartInstance = new Chart(el, {
+    type: 'doughnut',
+    data: { labels: labels, datasets: [{ data: values, backgroundColor: colors.slice(0, labels.length), borderWidth: 0 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'right', labels: { color: '#8A8A9A', font: { family: 'Outfit', size: 10 }, padding: 6, boxWidth: 10 } } },
+      cutout: '55%'
+    }
+  });
+}
+
+function renderSalesTable(data) {
+  var sales = data.stripe?.recent || [];
+  var tb = document.getElementById('tb-sales');
+  if (!tb) return;
+  if (sales.length === 0) { tb.innerHTML = '<tr><td colspan="3" class="empty">Sin ventas registradas</td></tr>'; return; }
+  tb.innerHTML = sales.map(function(s) {
+    return '<tr><td style="color:var(--gold);font-weight:500">' + fmt(s.amount) + '</td><td>' + (s.description || '\u2014') + '</td><td style="color:var(--muted)">' + fmtDate(s.date) + '</td></tr>';
+  }).join('');
+}
+
+function renderLeadsTable(data) {
+  var leads = data.brevo_contacts?.contacts || [];
+  var tb = document.getElementById('tb-leads');
+  if (!tb) return;
+  if (leads.length === 0) { tb.innerHTML = '<tr><td colspan="3" class="empty">Sin leads registrados</td></tr>'; return; }
+  tb.innerHTML = leads.slice(0, 10).map(function(l) {
+    return '<tr><td>' + maskEmail(l.email) + '</td><td>' + (l.signo || '\u2014') + '</td><td style="color:var(--muted)">' + fmtDate(l.created) + '</td></tr>';
+  }).join('');
+}
+
+function renderProducts(data) {
+  var products = data.stripe?.products || [];
+  var container = document.getElementById('products-grid');
+  if (!container) return;
+
+  if (products.length === 0) {
+    container.innerHTML = '<div class="empty">Sin productos en Stripe</div>';
+    return;
+  }
+
+  container.innerHTML = products.map(function(p) {
+    var priceHtml = '';
+    if (p.price && p.price.amount) {
+      priceHtml = '<div class="product-price">' + fmt(p.price.amount) + '</div>';
+    } else {
+      priceHtml = '<div class="product-price no-price">Sin precio asignado</div>';
+    }
+    return '<div class="product-card"><div class="product-name">' + p.name + '</div>' + priceHtml + '</div>';
+  }).join('');
+}
+
+function renderAcademia(data) {
+  var a = data.academia || {};
+  var container = document.getElementById('academia-grid');
+  if (!container) return;
+
+  if (a.error) {
+    container.innerHTML = '<div class="empty">' + a.error + '</div>';
+    return;
+  }
+
+  var stats = [
+    { value: a.total_students || 0, label: 'Alumnos' },
+    { value: a.total_enrollments || 0, label: 'Matriculas' },
+    { value: a.total_lessons_completed || 0, label: 'Lecciones completadas' },
+    { value: a.avg_quiz_score || 0, label: 'Media quiz (%)' },
+    { value: a.avg_xp || 0, label: 'XP medio' }
+  ];
+
+  container.innerHTML = stats.map(function(s) {
+    return '<div class="academia-stat"><div class="stat-value">' + s.value + '</div><div class="stat-label">' + s.label + '</div></div>';
+  }).join('');
+}
+
+function renderNurture(data) {
+  var ef = data.email_funnel || {};
+  if (ef.error) {
+    document.getElementById('m-nurture-contacts').textContent = '!!';
+    document.getElementById('m-nurture-contacts-sub').textContent = ef.error;
+    return;
+  }
+
+  document.getElementById('m-nurture-contacts').textContent = ef.unique_contacts || 0;
+  document.getElementById('m-nurture-contacts-sub').textContent = (ef.total_scheduled || 0) + ' emails programados';
+
+  document.getElementById('m-nurture-sent').textContent = ef.total_sent || 0;
+  var steps = ef.by_step || {};
+  var stepInfo = 'E2: ' + (steps[2]?.sent || 0) + ' · E3: ' + (steps[3]?.sent || 0) + ' · E4: ' + (steps[4]?.sent || 0) + ' · E5: ' + (steps[5]?.sent || 0);
+  document.getElementById('m-nurture-sent-sub').textContent = stepInfo;
+
+  document.getElementById('m-nurture-pending').textContent = ef.total_pending || 0;
+  document.getElementById('m-nurture-pending-sub').textContent = 'En cola de envio';
+
+  var total = (ef.total_sent || 0) + (ef.total_pending || 0);
+  var pct = total > 0 ? Math.round((ef.total_sent / total) * 100) : 0;
+  document.getElementById('m-nurture-progress').textContent = pct + '%';
+  document.getElementById('m-nurture-progress-sub').textContent = 'Secuencia completada';
+}
+
+function renderNewFeatures(data) {
+  var nf = data.new_features || {};
+  if (nf.error) {
+    document.getElementById('m-compat').textContent = '!!';
+    document.getElementById('m-compat-sub').textContent = nf.error;
+    return;
+  }
+
+  document.getElementById('m-compat').textContent = nf.compatibilidad_count || 0;
+  document.getElementById('m-compat-sub').textContent = 'Lecturas de compatibilidad';
+
+  document.getElementById('m-weekly').textContent = nf.weekly_horoscope_count || 0;
+  document.getElementById('m-weekly-sub').textContent = 'Emails semanales enviados';
+
+  document.getElementById('m-queue').textContent = nf.email_queue_count || 0;
+  document.getElementById('m-queue-sub').textContent = 'Pendientes de envio';
+
+  document.getElementById('m-postpurchase').textContent = nf.post_purchase_sent || 0;
+  document.getElementById('m-postpurchase-sub').textContent = 'Secuencia post-compra';
+}
+
+function renderFunnelProducts(data) {
+  var nf = data.new_features || {};
+  var container = document.getElementById('funnel-products-grid');
+  if (!container) return;
+
+  var byProduct = nf.compras_by_product || {};
+  var keys = Object.keys(byProduct);
+
+  if (keys.length === 0) {
+    container.innerHTML = '<div class="empty">Sin compras registradas en el funnel este mes</div>';
+    return;
+  }
+
+  container.innerHTML = keys.map(function(name) {
+    return '<div class="product-card"><div class="product-name">' + name + '</div><div class="product-price">' + byProduct[name] + ' ventas</div></div>';
+  }).join('');
+}
+
+function renderStatus(data) {
+  var items = [];
+
+  // Stripe
+  if (data.stripe?.error) {
+    items.push({ status: 'err', text: 'Stripe: ' + data.stripe.error });
+  } else {
+    items.push({ status: 'ok', text: 'Stripe conectado - saldo disponible: ' + fmt(data.stripe?.balance_available || 0) });
+  }
+
+  // Brevo
+  if (data.brevo_contacts?.error) {
+    items.push({ status: 'err', text: 'Brevo: ' + data.brevo_contacts.error });
+  } else {
+    items.push({ status: 'ok', text: 'Brevo conectado - ' + (data.brevo_contacts?.total || 0) + ' contactos totales' });
+  }
+
+  // Supabase funnel
+  if (data.funnel?.error) {
+    items.push({ status: 'warn', text: 'Supabase funnel: ' + data.funnel.error });
+  } else {
+    var total = (data.funnel?.month?.lectura_generada || 0) + (data.funnel?.month?.email_capturado || 0) + (data.funnel?.month?.compra || 0);
+    if (total > 0) {
+      items.push({ status: 'ok', text: 'Funnel tracking activo - ' + total + ' eventos este mes' });
+    } else {
+      items.push({ status: 'warn', text: 'Funnel: tabla existe pero 0 eventos (tracking pendiente de conectar)' });
+    }
+  }
+
+  // Academia
+  if (data.academia?.error) {
+    items.push({ status: 'warn', text: 'Academia: ' + data.academia.error });
+  } else {
+    items.push({ status: 'ok', text: 'Academia - ' + (data.academia?.total_students || 0) + ' perfiles, ' + (data.academia?.total_enrollments || 0) + ' matriculas' });
+  }
+
+  // New features
+  if (data.new_features?.error) {
+    items.push({ status: 'warn', text: 'Nuevas funcionalidades: ' + data.new_features.error });
+  } else {
+    var compat = data.new_features?.compatibilidad_count || 0;
+    var weekly = data.new_features?.weekly_horoscope_count || 0;
+    items.push({ status: 'ok', text: 'Nuevas funcionalidades - ' + compat + ' compatibilidades, ' + weekly + ' horoscopos semanales' });
+  }
+
+  document.getElementById('status-list').innerHTML = items.map(function(i) {
+    return '<div class="status-item"><span class="dot ' + i.status + '"></span>' + i.text + '</div>';
+  }).join('');
+}
+
+init();
+</script>
+</body>
+</html>

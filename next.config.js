@@ -7,6 +7,11 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.supabase.co' },
     ],
   },
+  async rewrites() {
+    return [
+      { source: '/admin', destination: '/admin.html' },
+    ];
+  },
   async headers() {
     return [
       {
