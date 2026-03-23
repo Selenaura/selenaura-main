@@ -726,6 +726,7 @@ export default function MiSelenePage() {
       price: '7,99',
       desc: 'Lo que los planetas dicen de ti',
       gradient: 'from-blue-500/10 to-transparent',
+      url: 'https://carta.selenaura.com',
     },
     {
       id: 'compatibilidad',
@@ -734,6 +735,7 @@ export default function MiSelenePage() {
       price: '9,99',
       desc: 'La quimica cosmica entre dos personas',
       gradient: 'from-pink-500/10 to-transparent',
+      url: '/lecturas/compatibilidad',
     },
     {
       id: 'tarot-profunda',
@@ -742,6 +744,7 @@ export default function MiSelenePage() {
       price: '1,99',
       desc: '3 cartas, 3 respuestas',
       gradient: 'from-purple-500/10 to-transparent',
+      url: 'https://tarot.selenaura.com',
     },
   ];
 
