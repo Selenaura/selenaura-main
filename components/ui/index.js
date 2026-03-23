@@ -4,6 +4,7 @@
 // SELENE — Shared UI Components
 // ═══════════════════════════════════════════════
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 // ── Icons ──
@@ -105,77 +106,96 @@ export function PenIcon({ size = 20, className = 'text-selene-white-dim' }) {
 
 // ── Navbar ──
 export function Navbar({ showAuth = true, showDashboardNav = false }) {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav className="sticky top-0 z-50 px-6 py-4 flex justify-between items-center bg-selene-bg/90 backdrop-blur-xl border-b border-selene-border">
-      <Link href="/" className="flex items-center gap-2.5 no-underline">
-        <MoonIcon size={24} />
-        <span className="font-display text-[22px] font-semibold text-selene-gold tracking-wider">
-          SELENE
-        </span>
-      </Link>
+    <>
+      <nav className="sticky top-0 z-50 px-6 py-4 flex justify-between items-center bg-selene-bg/90 backdrop-blur-xl border-b border-selene-border">
+        <Link href="/" className="flex items-center gap-2.5 no-underline">
+          <MoonIcon size={24} />
+          <span className="font-display text-[22px] font-semibold text-selene-gold tracking-wider">
+            SELENE
+          </span>
+        </Link>
 
-      {showDashboardNav && (
-        <div className="flex gap-4 sm:gap-5 items-center">
-          <Link
-            href="/mi-selene"
-            className="flex flex-col items-center gap-0.5 no-underline group"
-            title="Mi Selene"
-          >
-            <HomeIcon size={20} className="text-selene-gold group-hover:text-selene-gold-light transition-colors" />
-            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
-              Mi Selene
-            </span>
-          </Link>
-          <Link
-            href="/lecturas"
-            className="flex flex-col items-center gap-0.5 no-underline group"
-            title="Lecturas"
-          >
-            <BookIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
-            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
+        {showDashboardNav && (
+          <div className="flex gap-4 sm:gap-5 items-center">
+            <Link href="/mi-selene" className="flex flex-col items-center gap-0.5 no-underline group" title="Mi Selene">
+              <HomeIcon size={20} className="text-selene-gold group-hover:text-selene-gold-light transition-colors" />
+              <span className="text-[10px] text-selene-white-dim hidden sm:block">Mi Selene</span>
+            </Link>
+            <Link href="/lecturas" className="flex flex-col items-center gap-0.5 no-underline group" title="Lecturas">
+              <BookIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
+              <span className="text-[10px] text-selene-white-dim hidden sm:block">Lecturas</span>
+            </Link>
+            <Link href="/mi-selene/diario" className="flex flex-col items-center gap-0.5 no-underline group" title="Diario">
+              <PenIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
+              <span className="text-[10px] text-selene-white-dim hidden sm:block">Diario</span>
+            </Link>
+            <Link href="/perfil" className="flex flex-col items-center gap-0.5 no-underline group" title="Perfil">
+              <UserIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
+              <span className="text-[10px] text-selene-white-dim hidden sm:block">Perfil</span>
+            </Link>
+          </div>
+        )}
+
+        {showAuth && !showDashboardNav && (
+          <div className="flex gap-3 items-center">
+            {/* Desktop links */}
+            <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block">
               Lecturas
-            </span>
-          </Link>
-          <Link
-            href="/mi-selene/diario"
-            className="flex flex-col items-center gap-0.5 no-underline group"
-            title="Diario"
-          >
-            <PenIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
-            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
-              Diario
-            </span>
-          </Link>
-          <Link
-            href="/perfil"
-            className="flex flex-col items-center gap-0.5 no-underline group"
-            title="Perfil"
-          >
-            <UserIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
-            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
-              Perfil
-            </span>
-          </Link>
-        </div>
-      )}
+            </Link>
+            <Link href="https://academia.selenaura.com/catalogo" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block" target="_blank">
+              Cursos
+            </Link>
+            <Link href="/auth?mode=login" className="text-sm text-selene-white-dim hover:text-selene-white px-4 py-2 no-underline hidden sm:inline-block">
+              Iniciar sesión
+            </Link>
+            <Link href="/auth?mode=register" className="text-sm font-semibold bg-selene-gold text-selene-bg px-5 py-2.5 rounded-lg hover:brightness-110 no-underline hidden sm:inline-block">
+              Empezar gratis
+            </Link>
 
-      {showAuth && !showDashboardNav && (
-        <div className="flex gap-3 items-center">
-          <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block">
-            Lecturas
-          </Link>
-          <Link href="https://academia.selenaura.com/catalogo" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block" target="_blank">
-            Cursos
-          </Link>
-          <Link href="/auth?mode=login" className="text-sm text-selene-white-dim hover:text-selene-white px-4 py-2 no-underline">
-            Iniciar sesion
-          </Link>
-          <Link href="/auth?mode=register" className="text-sm font-semibold bg-selene-gold text-selene-bg px-5 py-2.5 rounded-lg hover:brightness-110 no-underline">
-            Empezar gratis
-          </Link>
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="sm:hidden flex flex-col gap-1.5 p-2"
+              aria-label="Menú"
+            >
+              <span className={`w-5 h-0.5 bg-selene-white transition-all ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+              <span className={`w-5 h-0.5 bg-selene-white transition-all ${menuOpen ? 'opacity-0' : ''}`} />
+              <span className={`w-5 h-0.5 bg-selene-white transition-all ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+            </button>
+          </div>
+        )}
+      </nav>
+
+      {/* Mobile menu dropdown */}
+      {menuOpen && showAuth && !showDashboardNav && (
+        <div className="sm:hidden fixed inset-0 top-[57px] z-40 bg-selene-bg/95 backdrop-blur-xl border-t border-selene-border animate-fade-in">
+          <div className="flex flex-col items-center gap-6 pt-12">
+            <Link href="/lecturas" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline">
+              Lecturas
+            </Link>
+            <Link href="/lecturas/tarot" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline">
+              Tarot
+            </Link>
+            <Link href="/lecturas/compatibilidad" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline">
+              Compatibilidad
+            </Link>
+            <Link href="https://academia.selenaura.com/catalogo" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline" target="_blank">
+              Cursos
+            </Link>
+            <div className="w-10 h-px bg-selene-border my-2" />
+            <Link href="/auth?mode=login" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white-dim no-underline">
+              Iniciar sesión
+            </Link>
+            <Link href="/auth?mode=register" onClick={() => setMenuOpen(false)} className="bg-selene-gold text-selene-bg font-semibold text-base px-8 py-3 rounded-xl no-underline">
+              Empezar gratis
+            </Link>
+          </div>
         </div>
       )}
-    </nav>
+    </>
   );
 }
 
