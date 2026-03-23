@@ -324,21 +324,21 @@ export default function HomePage() {
               className="no-underline group"
             >
               <div className="bg-selene-card rounded-2xl border-gradient p-5 h-full transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(201,168,76,0.08)] card-lift relative overflow-hidden">
-                {reading.badge && (
-                  <div className="absolute top-4 right-4">
-                    <span
-                      className="text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wide"
-                      style={{ background: reading.badgeColor, color: '#0A0A0F' }}
-                    >
-                      {reading.badge}
-                    </span>
-                  </div>
-                )}
                 <div className="flex justify-between items-start mb-3">
                   <reading.IconComp size={32} className="text-selene-gold" />
-                  <span className="font-display text-xl font-semibold text-selene-gold">
-                    {reading.price} &euro;
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-display text-xl font-semibold text-selene-gold">
+                      {reading.price} &euro;
+                    </span>
+                    {reading.badge && (
+                      <span
+                        className="text-[9px] font-bold px-2.5 py-1 rounded-full tracking-wide whitespace-nowrap"
+                        style={{ background: reading.badgeColor, color: '#0A0A0F' }}
+                      >
+                        {reading.badge}
+                      </span>
+                    )}
+                  </div>
                 </div>
                 <h3 className="text-[15px] font-semibold text-selene-white mb-1.5 group-hover:text-selene-gold transition-colors">
                   {reading.title}
