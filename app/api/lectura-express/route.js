@@ -81,6 +81,27 @@ export async function POST(request) {
     // Send to Brevo (non-blocking)
     const lecturaHtml = lecturaText.split('\n\n').map(p => `<p>${p}</p>`).join('\n');
 
+    // Track funnel events in Supabase
+    const serviceKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+    if (serviceKey && supabaseUrl) {
+      const trackHeaders = {
+        'apikey': serviceKey,
+        'Authorization': `Bearer ${serviceKey}`,
+        'Content-Type': 'application/json',
+      };
+      // Track lectura_generada
+      fetch(`${supabaseUrl}/rest/v1/funnel_events`, {
+        method: 'POST', headers: trackHeaders,
+        body: JSON.stringify({ event_type: 'lectura_generada', signo_solar: signoSolar, email }),
+      }).catch(e => console.error('Funnel track error:', e.message));
+      // Track email_capturado
+      fetch(`${supabaseUrl}/rest/v1/funnel_events`, {
+        method: 'POST', headers: trackHeaders,
+        body: JSON.stringify({ event_type: 'email_capturado', signo_solar: signoSolar, email }),
+      }).catch(e => console.error('Funnel track error:', e.message));
+    }
+
     const brevoPromises = [];
 
     if (process.env.BREVO_API_KEY) {

@@ -33,6 +33,16 @@ export async function POST(request) {
 
     const supabase = getServiceClient();
 
+    // Track compra in funnel_events
+    const { error: funnelError } = await supabase
+      .from('funnel_events')
+      .insert({
+        event_type: 'compra',
+        email: session.customer_details?.email || null,
+        metadata: { producto: product_id, tipo: product_type, importe_cents: session.amount_total },
+      });
+    if (funnelError) console.error('Funnel compra track error:', funnelError);
+
     if (product_type === 'reading' && user_id && product_id) {
       // Save reading purchase to history
       const { error: readingError } = await supabase
