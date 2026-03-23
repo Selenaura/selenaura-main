@@ -184,7 +184,7 @@ export default function ProfilePage() {
           {[
             { label: 'Mis lecturas', icon: '📜', action: () => router.push('/mi-selene') },
             { label: 'Catalogo de lecturas', icon: '🔮', action: () => router.push('/lecturas') },
-            { label: 'Cursos Selene', icon: '📚', href: 'https://academia.selenaura.com/catalogo' },
+            { label: 'Cursos Selene', icon: '📚', href: 'https://academy.selenaura.com/' },
             { label: 'Cerrar sesion', icon: '🚪', action: handleLogout, danger: true },
           ].map((item, i) => (
             item.href ? (

@@ -270,7 +270,7 @@ export default function HomePage() {
               Despierta tu Brujula Interior: fundamentos de consciencia cosmica, tu carta natal y tu primera meditacion con resultados reales.
             </p>
             <a
-              href="https://academia.selenaura.com/catalogo"
+              href="https://academy.selenaura.com/"
               className="inline-block bg-selene-gold text-selene-bg font-semibold text-sm px-6 py-3 rounded-xl hover:brightness-110 no-underline"
               target="_blank"
               rel="noopener noreferrer"

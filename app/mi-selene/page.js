@@ -632,7 +632,7 @@ export default function MiSelenePage() {
             </Card>
           </Link>
 
-          <a href="https://academia.selenaura.com/catalogo" target="_blank" rel="noopener noreferrer" className="no-underline block group">
+          <a href="https://academy.selenaura.com/" target="_blank" rel="noopener noreferrer" className="no-underline block group">
             <Card hover className="relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-r from-selene-gold/8 via-transparent to-selene-gold/5 pointer-events-none" />
               <div className="relative flex items-center gap-4 p-5">

@@ -145,7 +145,7 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
             <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block">
               Lecturas
             </Link>
-            <Link href="https://academia.selenaura.com/catalogo" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block" target="_blank">
+            <Link href="https://academy.selenaura.com/" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block" target="_blank">
               Cursos
             </Link>
             <Link href="/auth?mode=login" className="text-sm text-selene-white-dim hover:text-selene-white px-4 py-2 no-underline hidden sm:inline-block">
@@ -182,7 +182,7 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
             <Link href="/lecturas/compatibilidad" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline">
               Compatibilidad
             </Link>
-            <Link href="https://academia.selenaura.com/catalogo" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline" target="_blank">
+            <Link href="https://academy.selenaura.com/" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline" target="_blank">
               Cursos
             </Link>
             <div className="w-10 h-px bg-selene-border my-2" />
