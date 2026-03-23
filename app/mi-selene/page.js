@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase-browser';
 import { getCrossSellRecommendations, READINGS } from '@/lib/constants';
 import { ZODIAC_SIGNS, getSunSign } from '@/lib/zodiac';
-import { getUpcomingEvents, getCurrentEvents, getPastEvents, getImpactColor, getTypeLabel, formatEventDate, daysUntil } from '@/lib/cosmic-calendar';
+import { getUpcomingEvents, getCurrentEvents, getPastEvents, getImpactColor, getTypeLabel, formatEventDate, daysUntil, getPersonalImpact } from '@/lib/cosmic-calendar';
 import {
   Navbar, Card, SectionTitle, ArrowIcon, SunIcon, HistoryIcon,
   CompassIcon, MoonIcon, BookIcon, StarIcon, Badge,
@@ -353,7 +353,7 @@ function ConsejoDelDia() {
 // ── Component: EventosCosmicos ──
 // ══════════════════════════════════════════════════
 
-function EventosCosmicos() {
+function EventosCosmicos({ sunSign }) {
   const current = getCurrentEvents();
   const upcoming = getUpcomingEvents(5);
   const past = getPastEvents(2);
@@ -423,6 +423,28 @@ function EventosCosmicos() {
                   <h4 className="text-[14px] font-semibold text-selene-white mb-0.5">{ev.title}</h4>
                   {ev.subtitle && <p className="text-[11px] text-selene-gold/70 mb-1">{ev.subtitle}</p>}
                   <p className="text-[12px] text-selene-white-dim leading-relaxed" style={{ textAlign: 'justify' }}>{ev.desc}</p>
+
+                  {/* Personalized impact */}
+                  {(() => {
+                    const personal = sunSign ? getPersonalImpact(ev, sunSign) : null;
+                    if (!personal || isPast) return null;
+                    return (
+                      <div className="mt-3 p-3 rounded-xl bg-selene-gold/5 border border-selene-gold/10">
+                        <p className="text-[10px] text-selene-gold font-semibold tracking-[0.08em] uppercase mb-1.5">
+                          Cómo te afecta — {personal.signName} ({personal.element})
+                        </p>
+                        <p className="text-[12px] text-selene-white/85 leading-relaxed mb-2" style={{ textAlign: 'justify' }}>
+                          {personal.impact}
+                        </p>
+                        <div className="flex items-start gap-2">
+                          <span className="text-selene-gold text-sm mt-0.5 shrink-0">→</span>
+                          <p className="text-[12px] text-selene-gold/90 leading-relaxed font-medium">
+                            {personal.action}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               </div>
             );
@@ -923,7 +945,7 @@ export default function MiSelenePage() {
         {/* ═══ NEW: Eventos cosmicos proximos ═══ */}
         <SectionTitle subtitle="Lo que viene en el cielo">Eventos cosmicos</SectionTitle>
         <Card className="p-5 mb-8">
-          <EventosCosmicos />
+          <EventosCosmicos sunSign={sunSign} />
         </Card>
 
         {/* ═══ Mis lecturas recientes ═══ */}
