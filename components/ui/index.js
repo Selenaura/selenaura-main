@@ -85,6 +85,24 @@ export function StarIcon({ size = 16, className = 'text-selene-gold' }) {
   return <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" /></svg>;
 }
 
+export function HomeIcon({ size = 20, className = 'text-selene-white-dim' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+      <polyline points="9,22 9,12 15,12 15,22" />
+    </svg>
+  );
+}
+
+export function PenIcon({ size = 20, className = 'text-selene-white-dim' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
+    </svg>
+  );
+}
+
 // ── Navbar ──
 export function Navbar({ showAuth = true, showDashboardNav = false }) {
   return (
@@ -97,11 +115,47 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
       </Link>
 
       {showDashboardNav && (
-        <div className="flex gap-5 items-center">
-          <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white no-underline">Lecturas</Link>
-          <Link href="https://academia.selenaura.com/catalogo" className="text-sm text-selene-white-dim hover:text-selene-white no-underline" target="_blank">Cursos</Link>
-          <Link href="/mi-selene" className="text-selene-gold"><GridIcon size={20} className="text-selene-gold" /></Link>
-          <Link href="/perfil"><UserIcon size={20} /></Link>
+        <div className="flex gap-4 sm:gap-5 items-center">
+          <Link
+            href="/mi-selene"
+            className="flex flex-col items-center gap-0.5 no-underline group"
+            title="Mi Selene"
+          >
+            <HomeIcon size={20} className="text-selene-gold group-hover:text-selene-gold-light transition-colors" />
+            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
+              Mi Selene
+            </span>
+          </Link>
+          <Link
+            href="/lecturas"
+            className="flex flex-col items-center gap-0.5 no-underline group"
+            title="Lecturas"
+          >
+            <BookIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
+            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
+              Lecturas
+            </span>
+          </Link>
+          <Link
+            href="/mi-selene/diario"
+            className="flex flex-col items-center gap-0.5 no-underline group"
+            title="Diario"
+          >
+            <PenIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
+            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
+              Diario
+            </span>
+          </Link>
+          <Link
+            href="/perfil"
+            className="flex flex-col items-center gap-0.5 no-underline group"
+            title="Perfil"
+          >
+            <UserIcon size={20} className="text-selene-white-dim group-hover:text-selene-gold transition-colors" />
+            <span className="text-[10px] text-selene-white-dim group-hover:text-selene-white transition-colors hidden sm:block">
+              Perfil
+            </span>
+          </Link>
         </div>
       )}
 
@@ -195,7 +249,7 @@ export function Footer() {
         <MoonIcon size={16} className="text-selene-gold-dim" />
         <span className="font-display text-selene-gold-dim tracking-wider">SELENE</span>
       </div>
-      <p>Ciencia y consciencia de lo invisible · selenaura.com</p>
+      <p>Ciencia y consciencia de lo invisible &middot; selenaura.com</p>
       <div className="mt-2 opacity-50 flex gap-4 justify-center">
         <Link href="/legal" className="hover:text-selene-white no-underline text-selene-white-dim">Aviso Legal</Link>
         <Link href="/privacidad" className="hover:text-selene-white no-underline text-selene-white-dim">Privacidad</Link>
