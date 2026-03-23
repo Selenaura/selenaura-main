@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase-browser';
 import { getCrossSellRecommendations, READINGS } from '@/lib/constants';
 import { ZODIAC_SIGNS, getSunSign } from '@/lib/zodiac';
+import { getUpcomingEvents, getCurrentEvents, getPastEvents, getImpactColor, getTypeLabel, formatEventDate, daysUntil } from '@/lib/cosmic-calendar';
 import {
   Navbar, Card, SectionTitle, ArrowIcon, SunIcon, HistoryIcon,
   CompassIcon, MoonIcon, BookIcon, StarIcon, Badge,
@@ -203,14 +204,7 @@ const CONSEJOS = [
 ];
 
 // ══════════════════════════════════════════════════
-// ── NEW: Eventos cosmicos proximos ──
-// ══════════════════════════════════════════════════
-
-const EVENTOS_COSMICOS = [
-  { date: '29 marzo', event: 'Luna Nueva en Aries', desc: 'Momento ideal para nuevos comienzos. Planta semillas.', emoji: '🌑' },
-  { date: '12 abril', event: 'Luna Llena en Libra', desc: 'Culminacion en relaciones. Lo que sembraste se revela.', emoji: '🌕' },
-  { date: '25 abril', event: 'Mercurio retrogrado en Tauro', desc: 'Revisar, reflexionar, no firmar. La comunicacion pide paciencia.', emoji: '☿️' },
-];
+// Events now come from @/lib/cosmic-calendar (real 2026 data)
 
 // ══════════════════════════════════════════════════
 // ── NEW: Sign details (element, ruler, polarity) ──
@@ -360,30 +354,94 @@ function ConsejoDelDia() {
 // ══════════════════════════════════════════════════
 
 function EventosCosmicos() {
+  const current = getCurrentEvents();
+  const upcoming = getUpcomingEvents(5);
+  const past = getPastEvents(2);
+
+  // Combine: current events first, then upcoming (deduped)
+  const currentIds = new Set(current.map(e => e.date + e.title));
+  const allEvents = [
+    ...current,
+    ...upcoming.filter(e => !currentIds.has(e.date + e.title)),
+  ].slice(0, 6);
+
+  if (allEvents.length === 0) {
+    return <p className="text-sm text-selene-white-dim text-center py-4">No hay eventos próximos registrados.</p>;
+  }
+
   return (
-    <div className="relative pl-6">
-      {/* Vertical timeline line */}
-      <div className="absolute left-[9px] top-2 bottom-2 w-px bg-gradient-to-b from-selene-gold/40 via-selene-gold/20 to-transparent" />
-
-      <div className="space-y-5">
-        {EVENTOS_COSMICOS.map((ev, i) => (
-          <div key={i} className="relative">
-            {/* Timeline dot */}
-            <div className="absolute -left-6 top-1 w-[18px] h-[18px] rounded-full bg-selene-card border-2 border-selene-gold/50 flex items-center justify-center">
-              <div className="w-[6px] h-[6px] rounded-full bg-selene-gold" />
-            </div>
-
-            <div>
-              <div className="flex items-center gap-2 mb-0.5">
-                <span className="text-base">{ev.emoji}</span>
-                <span className="text-[11px] font-semibold text-selene-gold tracking-wide uppercase">{ev.date}</span>
+    <div className="space-y-1">
+      {/* Active now banner if there are current events */}
+      {current.length > 0 && (
+        <div className="mb-4 p-3 rounded-xl bg-selene-gold/5 border border-selene-gold/15">
+          <p className="text-[10px] text-selene-gold font-semibold tracking-[0.1em] uppercase mb-2">🔴 Activo ahora</p>
+          {current.map((ev, i) => (
+            <div key={`now-${i}`} className="flex items-start gap-3 mb-2 last:mb-0">
+              <span className="text-lg shrink-0">{ev.emoji}</span>
+              <div>
+                <p className="text-[13px] text-selene-white font-medium">{ev.title}</p>
+                <p className="text-[11px] text-selene-white-dim">{ev.subtitle}</p>
               </div>
-              <h4 className="text-[14px] font-semibold text-selene-white mb-1">{ev.event}</h4>
-              <p className="text-[12px] text-selene-white-dim leading-relaxed">{ev.desc}</p>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
+
+      {/* Timeline */}
+      <div className="relative pl-6">
+        <div className="absolute left-[9px] top-2 bottom-2 w-px bg-gradient-to-b from-selene-gold/40 via-selene-gold/20 to-transparent" />
+
+        <div className="space-y-5">
+          {allEvents.map((ev, i) => {
+            const days = daysUntil(ev.date);
+            const impactColor = getImpactColor(ev.impact);
+            const typeLabel = getTypeLabel(ev.type);
+            const isPast = days < 0;
+            const isToday = days === 0;
+
+            return (
+              <div key={i} className={`relative ${isPast ? 'opacity-50' : ''}`}>
+                {/* Timeline dot */}
+                <div className={`absolute -left-6 top-1 w-[18px] h-[18px] rounded-full bg-selene-card border-2 flex items-center justify-center ${
+                  isToday ? 'border-selene-gold pulse-glow' : ev.impact === 'alto' ? 'border-selene-gold/70' : 'border-selene-border'
+                }`}>
+                  <div className={`w-[6px] h-[6px] rounded-full ${isToday ? 'bg-selene-gold' : ev.impact === 'alto' ? 'bg-selene-gold/70' : 'bg-selene-white-dim'}`} />
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
+                    <span className="text-base">{ev.emoji}</span>
+                    <span className="text-[11px] font-semibold text-selene-gold tracking-wide">{formatEventDate(ev.date)}</span>
+                    {isToday && (
+                      <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-selene-gold text-selene-bg">HOY</span>
+                    )}
+                    {!isPast && !isToday && days <= 7 && (
+                      <span className="text-[9px] font-medium px-2 py-0.5 rounded-full bg-selene-gold/15 text-selene-gold">en {days}d</span>
+                    )}
+                    <span className={`text-[9px] px-1.5 py-0.5 rounded ${impactColor.bg} ${impactColor.text}`}>{typeLabel}</span>
+                  </div>
+                  <h4 className="text-[14px] font-semibold text-selene-white mb-0.5">{ev.title}</h4>
+                  {ev.subtitle && <p className="text-[11px] text-selene-gold/70 mb-1">{ev.subtitle}</p>}
+                  <p className="text-[12px] text-selene-white-dim leading-relaxed" style={{ textAlign: 'justify' }}>{ev.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Past events teaser */}
+      {past.length > 0 && (
+        <div className="mt-4 pt-4 border-t border-selene-border">
+          <p className="text-[10px] text-selene-white-dim/50 uppercase tracking-wider mb-2">Recientes</p>
+          {past.map((ev, i) => (
+            <div key={`past-${i}`} className="flex items-center gap-2 mb-1.5 opacity-40">
+              <span className="text-sm">{ev.emoji}</span>
+              <span className="text-[11px] text-selene-white-dim">{formatEventDate(ev.date)} — {ev.title}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

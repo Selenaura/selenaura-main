@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Navbar, Card, ArrowIcon, MoonIcon } from '@/components/ui';
 import LecturaExpressForm from '@/components/LecturaExpressForm';
+import { getUpcomingEvents, getImpactColor, getTypeLabel, formatEventDate, daysUntil } from '@/lib/cosmic-calendar';
 
 export default function HomePage() {
   const testimonials = [
@@ -352,6 +353,60 @@ export default function HomePage() {
         <div className="text-center mt-8">
           <Link href="/lecturas" className="text-sm text-selene-gold hover:text-selene-gold-light no-underline">
             Ver todas las lecturas &rarr;
+          </Link>
+        </div>
+      </section>
+
+      <div className="divider-stars">
+        <span className="text-selene-gold/40 text-xs">{'\u2726'}</span>
+      </div>
+
+      {/* ======= Section 4b: Cosmic Calendar ======= */}
+      <section className="max-w-[800px] mx-auto px-6 py-16">
+        <div className="text-center mb-10">
+          <p className="text-[11px] text-selene-gold font-semibold tracking-[0.15em] uppercase mb-3">
+            Calendario cosmico 2026
+          </p>
+          <h2 className="font-display text-3xl font-light text-selene-white">
+            Lo que viene en el cielo
+          </h2>
+          <p className="text-selene-white-dim text-sm mt-3 max-w-[500px] mx-auto">
+            Eventos astronomicos y astrologicos reales. Datos de NASA y observatorios — no predicciones inventadas.
+          </p>
+        </div>
+
+        <div className="space-y-3">
+          {getUpcomingEvents(4).map((ev, i) => {
+            const days = daysUntil(ev.date);
+            const impact = getImpactColor(ev.impact);
+            const typeLabel = getTypeLabel(ev.type);
+            return (
+              <Card key={i} className={`p-5 card-lift ${ev.impact === 'alto' ? 'border-selene-gold/20' : ''}`}>
+                <div className="flex items-start gap-4">
+                  <div className="text-3xl shrink-0 mt-1">{ev.emoji}</div>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <span className="text-[12px] font-semibold text-selene-gold">{formatEventDate(ev.date)}</span>
+                      {days <= 7 && days >= 0 && (
+                        <span className="text-[9px] font-medium px-2 py-0.5 rounded-full bg-selene-gold/15 text-selene-gold">
+                          {days === 0 ? 'HOY' : `en ${days} dias`}
+                        </span>
+                      )}
+                      <span className={`text-[9px] px-1.5 py-0.5 rounded ${impact.bg} ${impact.text}`}>{typeLabel}</span>
+                    </div>
+                    <h3 className="text-[15px] font-semibold text-selene-white mb-0.5">{ev.title}</h3>
+                    {ev.subtitle && <p className="text-[11px] text-selene-gold/60 mb-1">{ev.subtitle}</p>}
+                    <p className="text-[13px] text-selene-white-dim leading-relaxed" style={{ textAlign: 'justify' }}>{ev.desc}</p>
+                  </div>
+                </div>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="text-center mt-6">
+          <Link href="/auth?mode=register" className="text-sm text-selene-gold hover:text-selene-gold-light no-underline">
+            Crear cuenta para ver el calendario completo &rarr;
           </Link>
         </div>
       </section>
