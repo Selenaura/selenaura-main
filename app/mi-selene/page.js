@@ -658,7 +658,7 @@ export default function MiSelenePage() {
     return (
       <div className="min-h-screen bg-selene-bg flex flex-col items-center justify-center">
         <div className="w-14 h-14 border-2 border-selene-border border-t-selene-gold rounded-full animate-spin" />
-        <p className="font-display text-lg text-selene-gold mt-6">Alineando tus estrellas...</p>
+        <p className="font-display text-lg text-selene-gold mt-6">Cargando tu perfil...</p>
       </div>
     );
   }

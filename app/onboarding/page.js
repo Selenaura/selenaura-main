@@ -67,7 +67,7 @@ export default function OnboardingPage() {
     return (
       <div className="min-h-screen bg-selene-bg flex flex-col items-center justify-center">
         <div className="w-14 h-14 border-2 border-selene-border border-t-selene-gold rounded-full animate-spin" />
-        <p className="font-display text-xl text-selene-gold mt-6">Consultando las estrellas...</p>
+        <p className="font-display text-xl text-selene-gold mt-6">Calculando tu carta natal...</p>
         <p className="text-sm text-selene-white-dim mt-2">Calculando tu carta natal basica</p>
       </div>
     );

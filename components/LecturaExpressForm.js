@@ -246,7 +246,7 @@ export default function LecturaExpressForm({ compact = false }) {
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <span className="w-4 h-4 border-2 border-selene-bg/30 border-t-selene-bg rounded-full animate-spin" />
-                  Selene esta leyendo tus estrellas...
+                  Generando tu lectura personalizada...
                 </span>
               ) : (
                 'Enviarme mi lectura completa'
