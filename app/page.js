@@ -11,17 +11,17 @@ import {
 export default function HomePage() {
   const testimonials = [
     {
-      text: 'Me dio escalofrios lo precisa que fue. Nunca habia leido algo que me describiera tan bien.',
+      text: 'Me dio escalofríos lo precisa que fue. Nunca había leído algo que me describiera tan bien.',
       name: 'L.M.',
       sign: 'Escorpio',
     },
     {
-      text: 'Pense que seria generico, pero toco puntos que solo yo conozco. Ahora reviso mi horoscopo cada dia.',
+      text: 'Pensé que sería genérico, pero tocó puntos que solo yo conozco. Ahora reviso mi horóscopo cada día.',
       name: 'A.R.',
-      sign: 'Cancer',
+      sign: 'Cáncer',
     },
     {
-      text: 'Me ayudo a entender patrones que llevaba repitiendo toda mi vida. No es magia: es autoconocimiento profundo.',
+      text: 'Me ayudó a entender patrones que llevaba repitiendo toda mi vida. No es magia: es autoconocimiento profundo.',
       name: 'M.R.',
       sign: 'Sagitario',
     },
@@ -76,9 +76,9 @@ export default function HomePage() {
 
   const discoveryCards = [
     {
-      title: 'Tu personalidad segun la neurociencia',
-      text: 'Tu signo solar no es solo un simbolo \u2014 correlaciona con patrones reales de activacion neuronal estudiados por investigadores como Eysenck y Mischel.',
-      badge: 'Base cientifica',
+      title: 'Tu personalidad según la neurociencia',
+      text: 'Tu signo solar no es solo un símbolo \u2014 correlaciona con patrones reales de activación neuronal estudiados por investigadores como Eysenck y Mischel.',
+      badge: 'Base científica',
       icon: (
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-selene-gold">
           <path d="M12 2a7 7 0 017 7c0 3-2 5-3.5 6.5S13 18 13 22h-2c0-4-1-5-2.5-6.5S5 12 5 9a7 7 0 017-7z"/>
@@ -88,7 +88,7 @@ export default function HomePage() {
     },
     {
       title: 'Tu mapa emocional',
-      text: 'Tu Luna revela patrones emocionales inconscientes. La amigdala procesa emociones antes de que tu mente consciente las registre \u2014 y tu carta natal mapea esos patrones.',
+      text: 'Tu Luna revela patrones emocionales inconscientes. La amígdala procesa emociones antes de que tu mente consciente las registre \u2014 y tu carta natal mapea esos patrones.',
       badge: 'Exclusivo',
       icon: (
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-selene-gold">
@@ -97,9 +97,9 @@ export default function HomePage() {
       ),
     },
     {
-      title: 'Transitos que te afectan ahora',
-      text: 'Los planetas no se detienen. Cada semana, nuevas configuraciones activan diferentes areas de tu carta natal. Selene te avisa de lo que viene.',
-      badge: 'Actualizacion diaria',
+      title: 'Tránsitos que te afectan ahora',
+      text: 'Los planetas no se detienen. Cada semana, nuevas configuraciones activan diferentes áreas de tu carta natal. Selene te avisa de lo que viene.',
+      badge: 'Actualización diaria',
       icon: (
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-selene-gold">
           <circle cx="12" cy="12" r="10"/>
@@ -109,7 +109,7 @@ export default function HomePage() {
     },
     {
       title: 'Compatibilidad real',
-      text: 'No es solo "Aries con Libra". La sinastria analiza 10 planetas entre dos cartas para revelar donde conectais y donde hay friccion.',
+      text: 'No es solo "Aries con Libra". La sinastría analiza 10 planetas entre dos cartas para revelar dónde conectáis y dónde hay fricción.',
       badge: 'Parejas',
       icon: (
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="text-selene-gold">
@@ -184,7 +184,7 @@ export default function HomePage() {
             <div className="bg-selene-card/80 backdrop-blur-xl rounded-2xl border border-selene-border p-6 glow-gold">
               <h2 className="font-display text-lg text-selene-white mb-1 text-center">Tu Lectura Express</h2>
               <p className="text-[12px] text-selene-white-dim mb-5 text-center">
-                Un solo dato. Un resultado que te sorprendera.
+                Un solo dato. Un resultado que te sorprenderá.
               </p>
               <LecturaExpressForm />
             </div>
@@ -199,7 +199,7 @@ export default function HomePage() {
             Simple y preciso
           </p>
           <h2 className="font-display text-3xl font-light text-selene-white">
-            Asi funciona
+            Así funciona
           </h2>
         </div>
 
@@ -230,7 +230,7 @@ export default function HomePage() {
               </svg>
             </div>
             <p className="text-[13px] text-selene-white font-medium">Selene calcula tu cielo</p>
-            <p className="text-[11px] text-selene-white-dim mt-1">Precision astronomica</p>
+            <p className="text-[11px] text-selene-white-dim mt-1">Precisión astronómica</p>
           </div>
 
           {/* Connector */}
@@ -280,7 +280,7 @@ export default function HomePage() {
             Ciencia y consciencia
           </p>
           <h2 className="font-display text-3xl font-light text-selene-white">
-            Lo que descubriras
+            Lo que descubrirás
           </h2>
         </div>
 
@@ -401,7 +401,7 @@ export default function HomePage() {
                       <span className="text-[12px] font-semibold text-selene-gold">{formatEventDate(ev.date)}</span>
                       {days <= 7 && days >= 0 && (
                         <span className="text-[9px] font-medium px-2 py-0.5 rounded-full bg-selene-gold/15 text-selene-gold">
-                          {days === 0 ? 'HOY' : `en ${days} dias`}
+                          {days === 0 ? 'HOY' : `en ${days} días`}
                         </span>
                       )}
                       <span className={`text-[9px] px-1.5 py-0.5 rounded ${impact.bg} ${impact.text}`}>{typeLabel}</span>
@@ -485,7 +485,7 @@ export default function HomePage() {
             La diferencia
           </p>
           <h2 className="font-display text-3xl font-light text-selene-white">
-            &iquest;Por que Selene es diferente?
+            &iquest;Por qué Selene es diferente?
           </h2>
         </div>
 
@@ -555,13 +555,13 @@ export default function HomePage() {
           <div className="relative">
             <div className="mb-4"><IconStar size={40} className="text-selene-gold mx-auto" /></div>
             <p className="text-[11px] text-selene-gold font-semibold tracking-[0.15em] uppercase mb-2">
-              Formacion
+              Formación
             </p>
             <h3 className="font-display text-2xl text-selene-white mb-2">
               Tu primer curso &mdash; completamente gratuito
             </h3>
             <p className="text-[14px] text-selene-white-dim max-w-[440px] mx-auto mb-6 leading-relaxed">
-              Despierta tu Brujula Interior: fundamentos de consciencia cosmica, tu carta natal y tu primera meditacion con resultados reales.
+              Despierta tu Brújula Interior: fundamentos de consciencia cósmica, tu carta natal y tu primera meditación con resultados reales.
             </p>
             <a
               href="https://academy.selenaura.com/"
@@ -583,7 +583,7 @@ export default function HomePage() {
       <section className="max-w-[480px] mx-auto px-6 py-16 text-center">
         <div className="mb-5"><IconMoonCustom size={48} className="text-selene-gold mx-auto" /></div>
         <h2 className="font-display text-3xl font-light text-selene-white mb-3">
-          Tus estrellas llevan esperandote toda la vida
+          Tus estrellas llevan esperándote toda la vida
         </h2>
         <p className="text-selene-white-dim text-sm mb-8 max-w-[400px] mx-auto">
           3 segundos. Tu fecha de nacimiento. Y Selene te revela lo que llevas dentro.

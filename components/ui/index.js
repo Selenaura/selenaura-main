@@ -142,23 +142,30 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
         {showAuth && !showDashboardNav && (
           <div className="flex gap-3 items-center">
             {/* Desktop links */}
-            <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block">
+            <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden md:inline-block">
               Lecturas
             </Link>
-            <Link href="https://academy.selenaura.com/" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden sm:inline-block" target="_blank">
+            <Link href="https://academy.selenaura.com/" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden md:inline-block" target="_blank">
               Cursos
             </Link>
-            <Link href="/auth?mode=login" className="text-sm text-selene-white-dim hover:text-selene-white px-4 py-2 no-underline hidden sm:inline-block">
+            <Link href="/auth?mode=login" className="text-sm text-selene-white-dim hover:text-selene-white px-4 py-2 no-underline hidden md:inline-block">
               Iniciar sesión
             </Link>
-            <Link href="/auth?mode=register" className="text-sm font-semibold bg-selene-gold text-selene-bg px-5 py-2.5 rounded-lg hover:brightness-110 no-underline hidden sm:inline-block">
+            <Link href="/auth?mode=register" className="text-sm font-semibold bg-selene-gold text-selene-bg px-5 py-2.5 rounded-lg hover:brightness-110 no-underline hidden md:inline-block">
               Empezar gratis
             </Link>
+
+            {/* Language selector */}
+            <span className="text-[11px] text-selene-white-dim/60 hidden md:inline-block ml-1">
+              <span className="text-selene-gold font-semibold">ES</span>
+              <span className="mx-1">|</span>
+              <span className="opacity-50 cursor-not-allowed" title="Coming soon">EN</span>
+            </span>
 
             {/* Mobile hamburger */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="sm:hidden flex flex-col gap-1.5 p-2"
+              className="md:hidden flex flex-col gap-1.5 p-2"
               aria-label="Menú"
             >
               <span className={`w-5 h-0.5 bg-selene-white transition-all ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
@@ -171,7 +178,7 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
 
       {/* Mobile menu dropdown */}
       {menuOpen && showAuth && !showDashboardNav && (
-        <div className="sm:hidden fixed inset-0 top-[57px] z-40 bg-selene-bg/95 backdrop-blur-xl border-t border-selene-border animate-fade-in">
+        <div className="md:hidden fixed inset-0 top-[57px] z-40 bg-selene-bg/95 backdrop-blur-xl border-t border-selene-border animate-fade-in">
           <div className="flex flex-col items-center gap-6 pt-12">
             <Link href="/lecturas" onClick={() => setMenuOpen(false)} className="text-lg text-selene-white no-underline">
               Lecturas
@@ -192,6 +199,11 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
             <Link href="/auth?mode=register" onClick={() => setMenuOpen(false)} className="bg-selene-gold text-selene-bg font-semibold text-base px-8 py-3 rounded-xl no-underline">
               Empezar gratis
             </Link>
+            <div className="text-[12px] text-selene-white-dim/60 mt-2">
+              <span className="text-selene-gold font-semibold">ES</span>
+              <span className="mx-1.5">|</span>
+              <span className="opacity-50">EN</span>
+            </div>
           </div>
         </div>
       )}
