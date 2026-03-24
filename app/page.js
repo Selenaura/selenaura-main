@@ -155,14 +155,14 @@ export default function HomePage() {
             {/* Left: Copy */}
             <div className="text-center md:text-left">
               <h1 className="font-display text-3xl md:text-[44px] font-light text-selene-white mb-5 leading-[1.15]">
-                Descubre quién eres{' '}
-                <span className="text-gradient-gold font-normal">según las estrellas</span>
+                Tu fecha de nacimiento{' '}
+                <span className="text-gradient-gold font-normal">esconde un patrón</span>
               </h1>
-              <p className="text-selene-white-dim text-[16px] max-w-[440px] mb-4 leading-relaxed mx-auto md:mx-0">
-                Introduce tu fecha de nacimiento y Selene te revela tu esencia en 3 segundos.
+              <p className="text-selene-white-dim text-[16px] max-w-[440px] mb-4 leading-relaxed mx-auto md:mx-0 text-justify">
+                La cronobiología estudia cómo el momento de nacer influye en tu personalidad. Introduce tu fecha y descúbrelo en 3 segundos.
               </p>
               <p className="text-selene-gold/70 text-[13px] mb-6 mx-auto md:mx-0">
-                Mas de 12.000 personas ya descubrieron su signo con nosotros
+                Más de 12.000 personas ya descubrieron su perfil con nosotros
               </p>
               <div className="flex flex-wrap gap-4 text-[12px] text-selene-white-dim justify-center md:justify-start">
                 <span className="flex items-center gap-1.5">
