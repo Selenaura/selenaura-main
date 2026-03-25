@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Navbar, Footer, Card, ArrowIcon, SectionTitle } from '@/components/ui';
 import { ZODIAC_SIGNS, getSunSign } from '@/lib/zodiac';
@@ -89,11 +90,36 @@ function getSignFromDate(dateStr) {
 }
 
 export default function CompatibilidadPage() {
+  const router = useRouter();
   const [date1, setDate1] = useState('');
   const [date2, setDate2] = useState('');
   const [name1, setName1] = useState('');
   const [name2, setName2] = useState('');
   const [result, setResult] = useState(null);
+  const [loadingCheckout, setLoadingCheckout] = useState(false);
+
+  const handleCheckout = async () => {
+    setLoadingCheckout(true);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_type: 'reading', product_id: 'compatibilidad' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else if (res.status === 401) {
+        router.push('/auth?mode=login&redirect=/lecturas/compatibilidad');
+      } else {
+        alert(data.error || 'Error al crear la sesion de pago');
+      }
+    } catch (err) {
+      alert('Error de conexion. Intentalo de nuevo.');
+    } finally {
+      setLoadingCheckout(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -243,12 +269,13 @@ export default function CompatibilidadPage() {
                 Un analisis completo de sinastria compara ambas cartas natales en profundidad:
                 aspectos planetarios, casas compartidas y dinamicas karmicas.
               </p>
-              <Link
-                href="/checkout?product=compatibilidad"
-                className="inline-flex items-center gap-2 text-sm font-semibold bg-selene-gold text-selene-bg px-6 py-3 rounded-lg hover:brightness-110 no-underline transition"
+              <button
+                onClick={handleCheckout}
+                disabled={loadingCheckout}
+                className="inline-flex items-center gap-2 text-sm font-semibold bg-selene-gold text-selene-bg px-6 py-3 rounded-lg hover:brightness-110 transition disabled:opacity-50 disabled:cursor-wait"
               >
-                Analisis completo de compatibilidad &rarr; 9,99&thinsp;&euro;
-              </Link>
+                {loadingCheckout ? 'Conectando con el pago...' : 'Analisis completo de compatibilidad → 9,99\u2009€'}
+              </button>
               <p className="text-[11px] text-selene-white-dim/50 mt-3">
                 Incluye comparacion de cartas natales y dinamicas de relacion
               </p>

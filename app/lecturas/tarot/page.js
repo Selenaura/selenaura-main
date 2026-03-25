@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Navbar, Footer, Card, ArrowIcon } from '@/components/ui';
 
@@ -121,9 +122,34 @@ function TarotCard({ card, isFlipped, onClick, index }) {
 }
 
 export default function TarotPage() {
+  const router = useRouter();
   const [deck] = useState(() => shuffleArray(MAJOR_ARCANA).slice(0, 3));
   const [flipped, setFlipped] = useState([false, false, false]);
+  const [loadingCheckout, setLoadingCheckout] = useState(false);
   const allFlipped = flipped.every(Boolean);
+
+  const handleCheckout = async () => {
+    setLoadingCheckout(true);
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ product_type: 'reading', product_id: 'tarot-profunda' }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else if (res.status === 401) {
+        router.push('/auth?mode=login&redirect=/lecturas/tarot');
+      } else {
+        alert(data.error || 'Error al crear la sesion de pago');
+      }
+    } catch (err) {
+      alert('Error de conexion. Intentalo de nuevo.');
+    } finally {
+      setLoadingCheckout(false);
+    }
+  };
 
   const handleFlip = useCallback((index) => {
     setFlipped(prev => {
@@ -196,12 +222,13 @@ export default function TarotPage() {
               Estas tres cartas tienen un mensaje unico para ti.
               Una interpretacion profunda conecta sus significados con tu momento vital.
             </p>
-            <Link
-              href="/checkout?product=tarot-profunda"
-              className="inline-flex items-center gap-2 text-sm font-semibold bg-selene-gold text-selene-bg px-6 py-3 rounded-lg hover:brightness-110 no-underline transition"
+            <button
+              onClick={handleCheckout}
+              disabled={loadingCheckout}
+              className="inline-flex items-center gap-2 text-sm font-semibold bg-selene-gold text-selene-bg px-6 py-3 rounded-lg hover:brightness-110 transition disabled:opacity-50 disabled:cursor-wait"
             >
-              Interpretacion profunda &rarr; 1,99&thinsp;&euro;
-            </Link>
+              {loadingCheckout ? 'Conectando con el pago...' : 'Interpretacion profunda → 1,99\u2009€'}
+            </button>
             <p className="text-[11px] text-selene-white-dim/50 mt-3">
               Un analisis personalizado de tu tirada de tres cartas
             </p>
