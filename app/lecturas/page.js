@@ -32,31 +32,30 @@ export default function LecturasPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {freeReadings.map(reading => (
-            <Card key={reading.id} className="p-5">
-              <div className="flex justify-between items-start mb-3">
-                <span className="text-[28px]">{reading.icon}</span>
-                <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded tracking-wide"
-                  style={{ color: '#0A0A0F', background: reading.color }}
-                >
-                  {reading.tag}
-                </span>
-              </div>
-              <h3 className="text-[15px] font-semibold text-selene-white mb-1">{reading.title}</h3>
-              <p className="text-[11px] text-selene-white-dim mb-3">{reading.subtitle}</p>
-              <p className="text-[12px] text-selene-white-dim leading-relaxed mb-4" style={{ textAlign: 'justify' }}>
-                {reading.description}
-              </p>
-              <div className="flex justify-between items-center">
-                <span className="text-sm font-bold text-selene-success">{reading.price_label}</span>
-                <Link
-                  href={reading.requires_account ? '/auth?mode=register' : '#'}
-                  className="text-sm text-selene-gold font-medium hover:text-selene-gold-light no-underline flex items-center gap-1"
-                >
-                  {reading.requires_account ? 'Crear cuenta' : 'Probar'} <ArrowIcon size={12} />
-                </Link>
-              </div>
-            </Card>
+            <Link key={reading.id} href={reading.url || '/auth?mode=register'} className="no-underline">
+              <Card hover className="p-5 h-full cursor-pointer">
+                <div className="flex justify-between items-start mb-3">
+                  <span className="text-[28px]">{reading.icon}</span>
+                  <span
+                    className="text-[10px] font-bold px-2 py-0.5 rounded tracking-wide"
+                    style={{ color: '#0A0A0F', background: reading.color }}
+                  >
+                    {reading.tag}
+                  </span>
+                </div>
+                <h3 className="text-[15px] font-semibold text-selene-white mb-1">{reading.title}</h3>
+                <p className="text-[11px] text-selene-white-dim mb-3">{reading.subtitle}</p>
+                <p className="text-[12px] text-selene-white-dim leading-relaxed mb-4" style={{ textAlign: 'justify' }}>
+                  {reading.description}
+                </p>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm font-bold text-selene-success">{reading.price_label}</span>
+                  <span className="text-sm text-selene-gold font-medium flex items-center gap-1">
+                    {reading.requires_account ? 'Crear cuenta' : 'Probar'} <ArrowIcon size={12} />
+                  </span>
+                </div>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>
@@ -71,33 +70,30 @@ export default function LecturasPage() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {premiumReadings.map(reading => (
-            <Card key={reading.id} hover className="p-5 flex flex-col">
-              <div className="flex justify-between items-start mb-3">
-                <span className="text-[28px]">{reading.icon}</span>
-                <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded tracking-wide"
-                  style={{ color: '#0A0A0F', background: reading.color }}
-                >
-                  {reading.tag}
-                </span>
-              </div>
-              <h3 className="text-[15px] font-semibold text-selene-white mb-1">{reading.title}</h3>
-              <p className="text-[11px] text-selene-white-dim mb-3">{reading.subtitle}</p>
-              <p className="text-[12px] text-selene-white-dim leading-relaxed mb-4 flex-1" style={{ textAlign: 'justify' }}>
-                {reading.description}
-              </p>
-              <div className="flex justify-between items-center mt-auto">
-                <span className="text-sm font-bold text-selene-gold">{reading.price_label}</span>
-                <Link
-                  href={reading.url || `/lecturas/${reading.id}`}
-                  target={reading.url?.startsWith('http') ? '_blank' : undefined}
-                  rel={reading.url?.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className="text-sm text-selene-gold font-medium hover:text-selene-gold-light no-underline flex items-center gap-1"
-                >
-                  Solicitar <ArrowIcon size={12} />
-                </Link>
-              </div>
-            </Card>
+            <Link key={reading.id} href={reading.url || `/lecturas/${reading.id}`} className="no-underline">
+              <Card hover className="p-5 flex flex-col h-full cursor-pointer">
+                <div className="flex justify-between items-start mb-3">
+                  <span className="text-[28px]">{reading.icon}</span>
+                  <span
+                    className="text-[10px] font-bold px-2 py-0.5 rounded tracking-wide"
+                    style={{ color: '#0A0A0F', background: reading.color }}
+                  >
+                    {reading.tag}
+                  </span>
+                </div>
+                <h3 className="text-[15px] font-semibold text-selene-white mb-1">{reading.title}</h3>
+                <p className="text-[11px] text-selene-white-dim mb-3">{reading.subtitle}</p>
+                <p className="text-[12px] text-selene-white-dim leading-relaxed mb-4 flex-1" style={{ textAlign: 'justify' }}>
+                  {reading.description}
+                </p>
+                <div className="flex justify-between items-center mt-auto">
+                  <span className="text-sm font-bold text-selene-gold">{reading.price_label}</span>
+                  <span className="text-sm text-selene-gold font-medium flex items-center gap-1">
+                    Solicitar <ArrowIcon size={12} />
+                  </span>
+                </div>
+              </Card>
+            </Link>
           ))}
         </div>
       </section>
