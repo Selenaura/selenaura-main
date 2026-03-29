@@ -4,8 +4,9 @@
 // SELENE — Shared UI Components
 // ═══════════════════════════════════════════════
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 // ── Icons ──
 export function MoonIcon({ size = 20, className = 'text-selene-gold' }) {
@@ -105,8 +106,75 @@ export function PenIcon({ size = 20, className = 'text-selene-white-dim' }) {
 }
 
 // ── Navbar ──
+export function SearchIcon({ size = 20, className = 'text-selene-white-dim' }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={className}>
+      <circle cx="11" cy="11" r="8" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+const SEARCH_ITEMS = [
+  { label: 'Lectura Express', desc: 'Tu signo solar gratis', url: '/#hero' },
+  { label: 'Carta Natal Completa', desc: 'Todos tus planetas y casas', url: 'https://carta.selenaura.com/' },
+  { label: 'Compatibilidad', desc: 'Sinastria entre dos personas', url: 'https://carta.selenaura.com/' },
+  { label: 'Tarot', desc: 'Tirada personalizada de 3 cartas', url: 'https://tarot.selenaura.com/' },
+  { label: 'Interpretacion de Suenos', desc: 'Descifra tu inconsciente', url: 'https://suenos.selenaura.com/' },
+  { label: 'Cursos', desc: 'Formacion en Selene Academia', url: 'https://academy.selenaura.com/' },
+  { label: 'Master en Guia Espiritual Profesional', desc: 'Ejerce profesionalmente con certificacion', url: 'https://academy.selenaura.com/' },
+  { label: 'Horoscopo diario', desc: 'Tu energia del dia', url: '/mi-selene' },
+  { label: 'Calendario cosmico', desc: 'Eventos astronomicos 2026', url: '/mi-selene' },
+  { label: 'Mercurio Retrogrado', desc: 'Como te afecta segun tu signo', url: '/#mercurio' },
+  { label: 'Diario lunar', desc: 'Registro de tu viaje interior', url: '/mi-selene/diario' },
+  { label: 'Perfil', desc: 'Tu cuenta y configuracion', url: '/perfil' },
+];
+
 export function Navbar({ showAuth = true, showDashboardNav = false }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef(null);
+  const searchContainerRef = useRef(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (searchOpen && searchInputRef.current) searchInputRef.current.focus();
+  }, [searchOpen]);
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
+        setSearchOpen(false);
+        setSearchQuery('');
+      }
+    }
+    if (searchOpen) document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [searchOpen]);
+
+  useEffect(() => {
+    function handleEsc(e) { if (e.key === 'Escape') { setSearchOpen(false); setSearchQuery(''); } }
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
+  }, []);
+
+  const filteredResults = searchQuery.trim()
+    ? SEARCH_ITEMS.filter(item => {
+        const q = searchQuery.toLowerCase();
+        return item.label.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q);
+      })
+    : [];
+
+  function handleResultClick(url) {
+    setSearchOpen(false);
+    setSearchQuery('');
+    if (url.startsWith('http')) {
+      window.open(url, '_blank');
+    } else {
+      router.push(url);
+    }
+  }
 
   return (
     <>
@@ -141,6 +209,69 @@ export function Navbar({ showAuth = true, showDashboardNav = false }) {
 
         {showAuth && !showDashboardNav && (
           <div className="flex gap-3 items-center">
+            {/* Search button */}
+            <div ref={searchContainerRef} className="relative">
+              <button
+                onClick={() => { setSearchOpen(!searchOpen); if (searchOpen) setSearchQuery(''); }}
+                className="p-2 rounded-lg hover:bg-selene-elevated transition-colors"
+                aria-label="Buscar"
+              >
+                <SearchIcon size={18} className={searchOpen ? 'text-selene-gold' : 'text-selene-white-dim hover:text-selene-white'} />
+              </button>
+
+              {searchOpen && (
+                <div className="absolute right-0 top-full mt-2 w-[340px] bg-selene-card/95 backdrop-blur-xl border border-selene-border rounded-2xl shadow-2xl overflow-hidden z-50">
+                  <div className="p-3 border-b border-selene-border">
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      value={searchQuery}
+                      onChange={e => setSearchQuery(e.target.value)}
+                      placeholder="Buscar lecturas, cursos, herramientas..."
+                      className="w-full bg-selene-elevated border border-selene-border rounded-xl px-4 py-2.5 text-sm text-selene-white placeholder:text-selene-white-dim/50 outline-none focus:border-selene-gold/40 transition font-body"
+                    />
+                  </div>
+
+                  {searchQuery.trim() ? (
+                    <div className="max-h-[280px] overflow-y-auto">
+                      {filteredResults.length > 0 ? filteredResults.map((item, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleResultClick(item.url)}
+                          className="w-full text-left px-4 py-3 hover:bg-selene-elevated/60 transition-colors flex items-start gap-3 border-b border-selene-border/50 last:border-0"
+                        >
+                          <SearchIcon size={14} className="text-selene-gold shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-[13px] text-selene-white font-medium">{item.label}</p>
+                            <p className="text-[11px] text-selene-white-dim">{item.desc}</p>
+                          </div>
+                        </button>
+                      )) : (
+                        <div className="px-4 py-6 text-center">
+                          <p className="text-[13px] text-selene-white-dim">No se encontraron resultados</p>
+                          <p className="text-[11px] text-selene-white-dim/50 mt-1">Prueba con otra palabra</p>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="px-4 py-3">
+                      <p className="text-[10px] text-selene-white-dim/50 uppercase tracking-wider mb-2">Populares</p>
+                      {SEARCH_ITEMS.slice(0, 5).map((item, i) => (
+                        <button
+                          key={i}
+                          onClick={() => handleResultClick(item.url)}
+                          className="w-full text-left px-2 py-2 hover:bg-selene-elevated/60 rounded-lg transition-colors flex items-center gap-2"
+                        >
+                          <span className="text-[11px] text-selene-gold">&#10022;</span>
+                          <span className="text-[12px] text-selene-white-dim">{item.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
             {/* Desktop links */}
             <Link href="/lecturas" className="text-sm text-selene-white-dim hover:text-selene-white px-3 py-2 no-underline hidden md:inline-block">
               Lecturas
