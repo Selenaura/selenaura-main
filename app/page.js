@@ -192,6 +192,111 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ======= Section: Master en Guia Espiritual Profesional ======= */}
+      <section className="max-w-[900px] mx-auto px-6 pt-8 pb-16">
+        <div className="relative bg-gradient-to-br from-selene-card via-selene-card to-selene-gold/[0.04] rounded-2xl border border-selene-gold/30 overflow-hidden">
+          {/* Background certificate watermark */}
+          <div className="absolute -right-8 -top-8 w-48 h-48 opacity-[0.03] pointer-events-none">
+            <svg viewBox="0 0 200 200" fill="none" stroke="#C9A84C" strokeWidth="1">
+              <circle cx="100" cy="100" r="90" />
+              <circle cx="100" cy="100" r="70" />
+              <circle cx="100" cy="100" r="50" />
+              <path d="M100 10 L100 190 M10 100 L190 100" />
+              {Array.from({ length: 12 }).map((_, i) => {
+                const angle = (i * 30 * Math.PI) / 180;
+                return <line key={i} x1={100 + 50 * Math.cos(angle)} y1={100 + 50 * Math.sin(angle)} x2={100 + 90 * Math.cos(angle)} y2={100 + 90 * Math.sin(angle)} />;
+              })}
+            </svg>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-r from-selene-gold/[0.06] to-transparent pointer-events-none" />
+
+          <div className="relative p-6 md:p-8 lg:p-10">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-center">
+              {/* Left: Copy */}
+              <div>
+                {/* Badge row */}
+                <div className="flex items-center gap-2 mb-4 flex-wrap">
+                  <span className="text-[9px] font-bold px-3 py-1 rounded-full bg-selene-gold text-selene-bg tracking-wide">
+                    NUEVO
+                  </span>
+                  <span className="text-[10px] font-semibold px-3 py-1 rounded-full border border-selene-gold/30 text-selene-gold tracking-wide">
+                    CERTIFICADO VERIFICABLE
+                  </span>
+                </div>
+
+                {/* Headline — PAS: Problem in headline */}
+                <h3 className="font-display text-xl md:text-2xl text-selene-white mb-2 leading-tight">
+                  Sabes leer las estrellas.{' '}
+                  <span className="text-gradient-gold">Ahora ejerce con certificado.</span>
+                </h3>
+
+                {/* Agitate + Solve */}
+                <p className="text-[14px] text-selene-white-dim max-w-[520px] mb-5 leading-relaxed" style={{ textAlign: 'justify' }}>
+                  El M&aacute;ster en Gu&iacute;a Espiritual Profesional es el &uacute;nico programa en espa&ntilde;ol que integra carta natal, neurociencia y &eacute;tica profesional. 30 lecciones, certificado verificable y tu perfil en el Directorio Profesional Selene.
+                </p>
+
+                {/* Benefits — Certificate-first */}
+                <div className="space-y-2 mb-5">
+                  {[
+                    { icon: '\uD83C\uDF93', text: 'Certificado M\u00e1ster verificable con c\u00f3digo \u00fanico' },
+                    { icon: '\uD83C\uDF10', text: 'Perfil p\u00fablico en el Directorio Profesional Selene' },
+                    { icon: '\u2726', text: 'M\u00e9todo Selene: carta natal + neurociencia + \u00e9tica' },
+                    { icon: '\uD83D\uDCBC', text: 'M\u00f3dulos de negocio, pricing y marco legal incluidos' },
+                  ].map((b, i) => (
+                    <div key={i} className="flex items-center gap-2.5">
+                      <span className="text-sm shrink-0">{b.icon}</span>
+                      <span className="text-[13px] text-selene-white/85">{b.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA row */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <a
+                    href="https://academy.selenaura.com/curso/guia-profesional"
+                    className="inline-flex items-center gap-2 bg-selene-gold text-selene-bg font-semibold text-[14px] px-7 py-3 rounded-xl hover:brightness-110 no-underline transition-all"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver el M&aacute;ster
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12,5 19,12 12,19" />
+                    </svg>
+                  </a>
+                  <div>
+                    <div className="flex items-baseline gap-2">
+                      <span className="font-display text-xl text-selene-gold font-semibold">149,99 &euro;</span>
+                      <span className="text-[12px] text-selene-white-dim/50 line-through">299 &euro;</span>
+                    </div>
+                    <p className="text-[11px] text-selene-white-dim/50 mt-0.5">Se paga con una sola sesi&oacute;n profesional</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Certificate visual */}
+              <div className="hidden md:flex flex-col items-center justify-center">
+                <div className="w-[160px] h-[200px] bg-selene-elevated/60 rounded-xl border border-selene-gold/20 flex flex-col items-center justify-center p-5 relative">
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-selene-gold text-selene-bg text-[8px] font-bold px-3 py-0.5 rounded-full tracking-wider">
+                    CERTIFICADO
+                  </div>
+                  <MoonIcon size={28} className="text-selene-gold mb-2" />
+                  <p className="text-[10px] text-selene-gold font-display tracking-wider text-center mb-1">SELENE ACADEMIA</p>
+                  <div className="w-12 h-px bg-selene-gold/30 mb-2" />
+                  <p className="text-[9px] text-selene-white-dim text-center leading-tight mb-2">Gu&iacute;a Espiritual<br />Profesional</p>
+                  <div className="w-8 h-8 rounded-full border-2 border-selene-gold/40 flex items-center justify-center">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2.5" strokeLinecap="round">
+                      <polyline points="20,6 9,17 4,12" />
+                    </svg>
+                  </div>
+                  <p className="text-[8px] text-selene-white-dim/40 mt-2 font-mono">SEL-M-XXXX</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ======= Section 2: "Asi funciona" + Testimonials ======= */}
       <section className="max-w-[900px] mx-auto px-6 py-16">
         <div className="text-center mb-12">
@@ -573,89 +678,6 @@ export default function HomePage() {
             </a>
           </div>
         </Card>
-      </section>
-
-      <div className="divider-stars">
-        <span className="text-selene-gold/40 text-xs">{'\u2726'}</span>
-      </div>
-
-      {/* ======= Section: Master en Guia Espiritual Profesional ======= */}
-      <section className="max-w-[800px] mx-auto px-6 py-16">
-        <div className="relative bg-selene-card rounded-2xl border border-selene-gold/25 overflow-hidden">
-          {/* Background decoration */}
-          <div className="absolute inset-0 bg-gradient-to-br from-selene-gold/8 via-transparent to-selene-gold/3 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-40 h-40 opacity-[0.04]">
-            <svg viewBox="0 0 200 200" fill="none" stroke="#C9A84C" strokeWidth="0.5">
-              <circle cx="100" cy="100" r="80" />
-              <circle cx="100" cy="100" r="60" />
-              <circle cx="100" cy="100" r="40" />
-              {Array.from({ length: 12 }).map((_, i) => {
-                const angle = (i * 30 * Math.PI) / 180;
-                return <line key={i} x1={100 + 40 * Math.cos(angle)} y1={100 + 40 * Math.sin(angle)} x2={100 + 80 * Math.cos(angle)} y2={100 + 80 * Math.sin(angle)} />;
-              })}
-            </svg>
-          </div>
-
-          <div className="relative p-8 md:p-10">
-            {/* Badge */}
-            <div className="flex items-center gap-2 mb-5">
-              <span className="text-[9px] font-bold px-3 py-1 rounded-full bg-selene-gold text-selene-bg tracking-wide">
-                NUEVO
-              </span>
-              <span className="text-[11px] text-selene-gold font-semibold tracking-[0.12em] uppercase">
-                Formaci&oacute;n profesional
-              </span>
-            </div>
-
-            {/* Headline */}
-            <h3 className="font-display text-2xl md:text-[28px] text-selene-white mb-3 leading-tight">
-              Convierte tu don en tu profesi&oacute;n
-            </h3>
-            <p className="text-[15px] text-selene-white-dim max-w-[560px] mb-6 leading-relaxed" style={{ textAlign: 'justify' }}>
-              El M&aacute;ster en Gu&iacute;a Espiritual Profesional te da la estructura, la ciencia y la &eacute;tica para ejercer con confianza. El &uacute;nico programa en espa&ntilde;ol que integra carta natal, neurociencia y negocio espiritual.
-            </p>
-
-            {/* Benefits grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-              {[
-                { icon: '\u2726', text: 'M\u00e9todo Selene: carta natal + neurociencia + \u00e9tica profesional' },
-                { icon: '\uD83C\uDF93', text: '30 lecciones, 10 m\u00f3dulos, certificado verificable' },
-                { icon: '\uD83D\uDCBC', text: 'M\u00f3dulos de negocio, pricing, legal y marca personal' },
-                { icon: '\u2728', text: 'Directorio Profesional Selene: visibilidad para captar clientes' },
-              ].map((b, i) => (
-                <div key={i} className="flex items-start gap-3 bg-selene-elevated/40 rounded-xl px-4 py-3">
-                  <span className="text-base shrink-0 mt-0.5">{b.icon}</span>
-                  <span className="text-[13px] text-selene-white/90 leading-snug">{b.text}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Price + CTA */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <a
-                href="https://academy.selenaura.com/"
-                className="inline-flex items-center gap-2 bg-selene-gold text-selene-bg font-semibold text-[14px] px-7 py-3 rounded-xl hover:brightness-110 no-underline transition-all"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Descubrir el M&aacute;ster
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <line x1="5" y1="12" x2="19" y2="12"/>
-                  <polyline points="12,5 19,12 12,19"/>
-                </svg>
-              </a>
-              <div className="flex items-baseline gap-2">
-                <span className="font-display text-2xl text-selene-gold font-semibold">149,99 &euro;</span>
-                <span className="text-[12px] text-selene-white-dim/60 line-through">299 &euro;</span>
-              </div>
-            </div>
-
-            {/* Social proof */}
-            <p className="text-[11px] text-selene-white-dim/50 mt-4">
-              Se paga con una sola sesi&oacute;n profesional &middot; Requisito: 2 certificaciones Selene completadas
-            </p>
-          </div>
-        </div>
       </section>
 
       <div className="divider-stars">
